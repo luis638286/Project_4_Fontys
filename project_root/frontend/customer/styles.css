@@ -1,48 +1,256 @@
-@import url("signup-style.css");
-
-/* Header */
-.site-header{
-  position: absolute;
-  top: 20px;
-  left: 20px;
-  right: 20px;
-  z-index: 2;
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
-.site-brand{ display:flex; align-items:center; gap:12px; color:white; font-weight:700; text-shadow:1px 1px 2px rgba(0,0,0,0.2); }
-.site-brand .brand-name{ font-size:20px; }
-.site-nav{ display:flex; gap:14px; }
-.site-nav a{ color:white; text-decoration:none; font-weight:600; }
 
-/* Page main wrapper */
-.site-main{ width:100%; max-width:1200px; margin: 80px auto 40px; padding: 0 20px; z-index:1; position:relative; }
+body {
+  font-family: 'Poppins', Arial, sans-serif;
+  color: #fff;
+  overflow-x: hidden;   /* hide horizontal scroll only */
+  overflow-y: auto;     /* enable vertical scrolling */
+  min-height: 100vh;
+}
 
-/* Hero overrides */
-.hero{ max-width:1100px; }
-.hero-cta{ margin-top:24px; width:100%; }
-.get-started{ display:inline-block; text-align:center; text-decoration:none; }
+/* Fullscreen background slideshow */
+.slideshow {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -2;
+}
 
-.hero .signup-right h2{ font-size:28px; color:#333; margin-bottom:8px; }
-.hero .signup-right p{ color:#666; }
+.slide {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background-size: cover;
+  background-position: center;
+  opacity: 0;
+  animation: slideAnimation 24s infinite;
+  filter: brightness(65%);
+}
 
-.deals-grid{ display:grid; grid-template-columns:1fr 1fr; gap:12px; }
-.card{ border:1px solid #eee; padding:12px; border-radius:10px; background: #fff; }
-.card h3{ margin-bottom:6px; font-size:18px; }
-.card p{ color:#666; margin-bottom:8px; }
-.card .signup-button{ padding:8px 12px; font-size:14px; }
+/* Make first slide visible instantly */
+.slide:nth-child(1) {
+  opacity: 1;
+  animation: none;
+}
 
-/* Categories */
-.categories{ margin-top:28px; }
-.categories .list{ display:flex; gap:14px; flex-wrap:wrap; }
-.category-card{ flex:1 1 220px; background:white; padding:14px; border-radius:12px; box-shadow:0 6px 20px rgba(0,0,0,0.06); }
-.category-card p{ color:#666; font-size:14px; }
+.slide:nth-child(2) { animation-delay: 6s; }
+.slide:nth-child(3) { animation-delay: 12s; }
+.slide:nth-child(4) { animation-delay: 18s; }
 
-.site-footer{ margin-top:28px; text-align:center; color:#777; }
+@keyframes slideAnimation {
+  0% { opacity: 0; }
+  10% { opacity: 1; }
+  30% { opacity: 1; }
+  40% { opacity: 0; }
+  100% { opacity: 0; }
+}
 
-@media (max-width: 768px){
-  .deals-grid{ grid-template-columns:1fr; }
-  .site-header{ position:static; padding: 12px 20px; }
-  .site-main{ margin-top:20px; }
+
+/* Header with slight transparency */
+header {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 60px;
+  background: rgba(255, 255, 255, 0.12);
+  backdrop-filter: blur(10px);
+}
+
+.logo {
+  font-size: 32px;
+  font-weight: bold;
+  color: #faff89;
+}
+
+.nav-links {
+  list-style: none;
+  display: flex;
+  gap: 30px;
+}
+
+.nav-links a {
+  text-decoration: none;
+  color: #fff;
+  font-weight: 500;
+  font-size: 18px;
+  transition: color 0.3s ease;
+}
+
+.nav-links a:hover {
+  color: #ffeb3b;
+}
+
+/* Foreground glassmorphic content box */
+.content-box {
+  max-width: 700px;
+  margin: 18vh auto;
+  padding: 40px;
+  text-align: center;
+  background: rgba(255, 255, 255, 0.25);
+  backdrop-filter: blur(20px);
+  border-radius: 18px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+  color: #fff;
+}
+
+.content-box h2 {
+  font-size: 42px;
+  margin-bottom: 10px;
+  color: #eaff90;
+}
+
+.content-box p {
+  font-size: 18px;
+  margin-bottom: 25px;
+  line-height: 1.6;
+}
+
+.cta-button {
+  text-decoration: none;
+  background: linear-gradient(45deg, #57ff71, #28cf33);
+  color: #003300;
+  padding: 14px 30px;
+  border-radius: 30px;
+  font-weight: bold;
+  font-size: 18px;
+  transition: transform 0.3s ease, background 0.3s ease;
+  display: inline-block;   /* ← This enables transform */
+}
+
+
+.cta-button:hover {
+  transform: scale(1.05);
+  background: linear-gradient(45deg, #6fff8f, #3ee34b);
+}
+
+/* ---------- Categories Section ---------- */
+.categories {
+  text-align: center;
+  margin: 80px auto 40px;
+  color: #fff;
+}
+
+.categories h2 {
+  font-size: 36px;
+  margin-bottom: 30px;
+  color: #ffe97f;
+}
+
+.category-grid {
+  display: flex;
+  justify-content: center;
+  gap: 30px;
+  flex-wrap: wrap;
+}
+
+.category-card {
+  width: 150px;
+  padding: 20px;
+  background: rgba(255, 255, 255, 0.18);
+  backdrop-filter: blur(15px);
+  border-radius: 15px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+  text-align: center;
+  transition: transform 0.3s ease;
+}
+
+.category-card img {
+  width: 80px;
+  margin-bottom: 10px;
+}
+
+.category-card h3 {
+  color: #fff;
+  font-size: 18px;
+}
+
+.category-card:hover {
+  transform: scale(1.08);
+}
+
+/* ---------- Deals Section ---------- */
+.deals {
+  text-align: center;
+  color: #fff;
+  margin: 60px auto;
+}
+
+.deals h2 {
+  font-size: 36px;
+  color: #ffda79;
+  margin-bottom: 25px;
+}
+
+.deals-grid {
+  display: flex;
+  justify-content: center;
+  gap: 30px;
+  flex-wrap: wrap;
+}
+
+.deal-card {
+  width: 280px;
+  background: rgba(255, 255, 255, 0.22);
+  backdrop-filter: blur(16px);
+  padding: 20px;
+  border-radius: 15px;
+  text-align: center;
+  box-shadow: 0 6px 25px rgba(0, 0, 0, 0.35);
+}
+
+.deal-card img {
+  width: 100%;
+  height: 170px;
+  object-fit: cover;
+  border-radius: 10px;
+  margin-bottom: 10px;
+}
+
+.deal-card button {
+  background: #a6ff4d;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 25px;
+  margin-top: 10px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: 0.3s ease;
+}
+
+.deal-card button:hover {
+  background: #d1ff74;
+}
+
+/* ---------- Footer Section ---------- */
+.footer {
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(10px);
+  padding: 40px 60px;
+  margin-top: 70px;
+  color: #fff;
+}
+
+.footer-content {
+  display: flex;
+  justify-content: space-around;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+.footer h3, .footer h4 {
+  color: #a6ff4d;
+}
+
+.footer-bottom {
+  text-align: center;
+  margin-top: 25px;
+  font-size: 14px;
+  color: #ccc;
 }

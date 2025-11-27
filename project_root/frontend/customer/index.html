@@ -1,102 +1,111 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>FreshMart - Home</title>
-	<!-- Reuse the signup/login styling via `styles.css` for consistent theme -->
-	<link rel="stylesheet" href="styles.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>FreshMart Grocery Store</title>
+  <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
-	<header class="site-header">
-		<div class="site-brand">
-			<div class="logo">🛒</div>
-			<div class="brand-name">FreshMart</div>
-		</div>
-		<nav class="site-nav">
-			<a href="index.html">Home</a>
-			<a href="login.html">Login</a>
-			<a href="signup.html">Sign Up</a>
-			<a href="#cart">Cart</a>
-		</nav>
-	</header>
+  <div class="slideshow">
+    <div class="slide" style="background-image: url('https://images.unsplash.com/photo-1542838132-92c53300491e');"></div>
+    <div class="slide" style="background-image: url('https://images.unsplash.com/photo-1504674900247-0877df9cc836');"></div>
+    <div class="slide" style="background-image: url('https://images.unsplash.com/photo-1582515073490-dc5cdcf98a4d');"></div>
+  </div>
 
-	<main class="site-main">
-		<!-- Use existing card style by reusing signup-container for hero -->
-		<section class="signup-container hero">
-			<div class="signup-left">
-				<div class="logo">🛒</div>
-				<div class="brand-name">FreshMart</div>
-				<p class="tagline">Your Neighborhood Supermarket Online</p>
-				<ul class="features">
-					<li>Fresh groceries delivered daily</li>
-					<li>Best prices guaranteed</li>
-					<li>Fast delivery & flexible slots</li>
-				</ul>
-				<div class="hero-cta">
-					<a href="signup.html" class="signup-button get-started">Get Started</a>
-				</div>
-			</div>
+  <header class="header-container">
+    <h1 class="logo">FreshMart</h1>
+    <nav>
+      <ul class="nav-links">
+        <li><a href="#">Home</a></li>
+        <li><a href="#">Products</a></li>
+        <li><a href="#">Offers</a></li>
+        <li><a href="#">Contact</a></li>
+      </ul>
+    </nav>
+  </header>
 
-			<div class="signup-right">
-				<div class="deals-block">
-					<div class="deals-header" style="margin-bottom:20px;">
-						<h2>Weekly Deals</h2>
-						<p>Top picks and discounts curated for you</p>
-					</div>
+  <main class="content-box">
+    <h2>Welcome to FreshMart</h2>
+    <p>
+      Discover freshness like never before! At FreshMart, we bring you crisp vegetables,
+      juicy fruits, organic essentials, and gourmet delights — full of flavor, health,
+      and happiness. Shop smart, eat fresh, live vibrant!
+    </p>
+    <a href="#" class="cta-button">Shop Now</a>
+  </main>
+  <section class="categories">
+    <h2>Shop by Category</h2>
+    <div class="category-grid">
+      <div class="category-card">
+        <img src="https://img.icons8.com/color/96/vegetarian-food.png" alt="Fruits">
+        <h3>Fruits</h3>
+      </div>
+      <div class="category-card">
+        <img src="https://img.icons8.com/color/96/salad.png" alt="Vegetables">
+        <h3>Vegetables</h3>
+      </div>
+      <div class="category-card">
+        <img src="https://img.icons8.com/color/96/milk-bottle.png" alt="Dairy">
+        <h3>Dairy</h3>
+      </div>
+      <div class="category-card">
+        <img src="https://img.icons8.com/color/96/groceries.png" alt="Groceries">
+        <h3>Groceries</h3>
+      </div>
+      <div class="category-card">
+        <img src="https://img.icons8.com/color/96/bread.png" alt="Bakery">
+        <h3>Bakery</h3>
+      </div>
+    </div>
+  </section>
+  <section class="deals">
+    <h2>Special Deals</h2>
+    <div class="deals-grid">
+      <div class="deal-card">
+        <img src="https://images.unsplash.com/photo-1572422044891-8f2d45e03546" alt="Fresh Apples">
+        <h3>Fresh Apples</h3>
+        <p>Now only $2.99 / kg</p>
+        <button>Buy Now</button>
+      </div>
+      <div class="deal-card">
+        <img src="https://images.unsplash.com/photo-1484981184820-441e8c32773b" alt="Milk">
+        <h3>Organic Milk</h3>
+        <p>20% Off — Limited Time</p>
+        <button>Buy Now</button>
+      </div>
+      <div class="deal-card">
+        <img src="https://images.unsplash.com/photo-1542838132-92c53300491e" alt="Avocados">
+        <h3>Fresh Avocados</h3>
+        <p>3 for $5</p>
+        <button>Buy Now</button>
+      </div>
+    </div>
+  </section>
 
-					<div class="deals-grid">
-						<div class="card">
-							<h3>Fresh Fruits</h3>
-							<p>Seasonal fruits from trusted suppliers</p>
-							<button class="signup-button">Shop</button>
-						</div>
-						<div class="card">
-							<h3>Dairy & Eggs</h3>
-							<p>Organic milk, cheese and more</p>
-							<button class="signup-button">Shop</button>
-						</div>
-						<div class="card">
-							<h3>Bakery</h3>
-							<p>Freshly baked daily</p>
-							<button class="signup-button">Shop</button>
-						</div>
-						<div class="card">
-							<h3>Pantry Staples</h3>
-							<p>Rice, pasta, oils and spices</p>
-							<button class="signup-button">Shop</button>
-						</div>
-					</div>
-				</div>
-			</div>
-		</section>
-
-		<!-- Categories / Highlights -->
-		<section class="categories">
-			<h2>Shop by Category</h2>
-			<div class="list">
-				<div class="category-card">
-					<h4>Vegetables</h4>
-					<p>Locally sourced greens</p>
-				</div>
-				<div class="category-card">
-					<h4>Meat & Fish</h4>
-					<p>High quality cuts</p>
-				</div>
-				<div class="category-card">
-					<h4>Beverages</h4>
-					<p>Juices, sodas, and more</p>
-				</div>
-				<div class="category-card">
-					<h4>Household</h4>
-					<p>Cleaning & essentials</p>
-				</div>
-			</div>
-		</section>
-
-		<footer class="site-footer">
-			<p>&copy; FreshMart — Your Neighborhood Supermarket</p>
-		</footer>
-	</main>
+  
+  <footer class="footer">
+    <div class="footer-content">
+      <div>
+        <h3>FreshMart</h3>
+        <p>Delivering freshness to your doorstep, every day.</p>
+      </div>
+      <div>
+        <h4>Contact</h4>
+        <p>Email: support@freshmart.com</p>
+        <p>Phone: +1 (800) 555-1234</p>
+      </div>
+      <div>
+        <h4>Opening Hours</h4>
+        <p>Mon-Sat: 8:00 - 21:00</p>
+        <p>Sunday: 9:00 - 18:00</p>
+      </div>
+      <div>
+        <h4>Follow Us</h4>
+        <p>Instagram | Facebook | Twitter</p>
+      </div>
+    </div>
+    <div class="footer-bottom">© 2025 FreshMart Grocery Store. All rights reserved.</div>
+  </footer>
 </body>
 </html>
