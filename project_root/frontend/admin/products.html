@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FreshMart Admin – Products</title>
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- Shared Admin Theme -->
+  <link rel="stylesheet" href="admin.css">
+  <link rel="stylesheet" href="products.css">
+</head>
+
+<body class="admin-dashboard-body">
+
+  <!-- Background orbs -->
+  <div class="admin-bg-orb orb-1"></div>
+  <div class="admin-bg-orb orb-2"></div>
+  <div class="admin-bg-orb orb-3"></div>
+
+  <div class="admin-shell">
+    <!-- Sidebar -->
+    <aside class="admin-sidebar">
+      <div class="sidebar-brand">
+        <div class="sidebar-logo-mark">🛒</div>
+        <div class="sidebar-brand-text">
+          <span class="sidebar-brand-title">FreshMart</span>
+          <span class="sidebar-brand-sub">Admin panel</span>
+        </div>
+      </div>
+
+      <nav class="sidebar-nav">
+        <a href="admin-dashboard.html" class="sidebar-link">
+          <span class="sidebar-icon">📊</span>
+          <span>Dashboard</span>
+        </a>
+
+        <a href="admin-orders.html" class="sidebar-link">
+          <span class="sidebar-icon">📦</span>
+          <span>Orders</span>
+        </a>
+
+        <a href="products.html" class="sidebar-link active">
+          <span class="sidebar-icon">🛍️</span>
+          <span>Products</span>
+        </a>
+
+        <a href="#" class="sidebar-link">
+          <span class="sidebar-icon">👥</span>
+          <span>Customers</span>
+        </a>
+
+        <a href="#" class="sidebar-link">
+          <span class="sidebar-icon">⚙️</span>
+          <span>Settings</span>
+        </a>
+      </nav>
+
+      <div class="sidebar-footer">
+        <div class="sidebar-status">
+          <span class="status-dot"></span> Store online
+        </div>
+        <button class="sidebar-logout" onclick="window.location.href='admin-login.html'">Log out</button>
+      </div>
+    </aside>
+
+    <!-- Main -->
+    <div class="admin-main">
+
+      <!-- Topbar -->
+      <header class="admin-topbar">
+        <div class="topbar-left">
+          <div class="topbar-title-group">
+            <h1 class="topbar-title">Products</h1>
+            <p class="topbar-subtitle">Manage inventory and add new items</p>
+          </div>
+        </div>
+
+        <div class="topbar-right">
+          <div class="topbar-search">
+            <span class="topbar-search-icon">🔍</span>
+            <input type="search" id="product-search" placeholder="Search products…" />
+          </div>
+
+          <button class="topbar-icon-button">
+            <span class="topbar-icon">🔔</span>
+            <span class="topbar-dot"></span>
+          </button>
+
+          <div class="topbar-user">
+            <div class="topbar-user-meta">
+              <span class="topbar-user-name">Admin</span>
+              <span class="topbar-user-role">Store manager</span>
+            </div>
+            <div class="topbar-avatar">FM</div>
+          </div>
+        </div>
+      </header>
+
+      <!-- Content -->
+      <main class="admin-content">
+
+        <!-- Add Product Card -->
+        <div class="product-card">
+          <h2 class="product-card-title">Add a New Product</h2>
+
+          <form id="productForm" class="product-form">
+
+            <div class="form-row">
+              <label>Product Name</label>
+              <input type="text" id="name" class="product-input" placeholder="Bananas" required>
+            </div>
+
+            <div class="form-row">
+              <label>Image URL</label>
+              <input type="url" id="image_url" class="product-input" placeholder="https://image.jpg">
+            </div>
+
+            <div class="form-row">
+              <label>Category</label>
+              <select id="category" class="product-input" required>
+                <option value="">Select category</option>
+                <option value="Fruits">Fruits</option>
+                <option value="Vegetables">Vegetables</option>
+                <option value="Dairy">Dairy</option>
+                <option value="Bakery">Bakery</option>
+                <option value="Drinks">Drinks</option>
+                <option value="Snacks">Snacks</option>
+                <option value="Meat">Meat</option>
+              </select>
+            </div>
+
+            <div class="form-row">
+              <label>Price (€)</label>
+              <input type="number" id="price" class="product-input" step="0.01" required>
+            </div>
+
+            <button type="submit" class="product-submit-btn">Add Product</button>
+          </form>
+
+          <p id="product-message" class="product-message"></p>
+        </div>
+
+      </main>
+
+    </div>
+  </div>
+
+  <script src="products.js"></script>
+</body>
+</html>

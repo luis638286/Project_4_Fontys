@@ -1,27 +1,32 @@
+import os
+import sqlite3
 from flask import Flask, jsonify, request, session
 from flask_cors import CORS
 import bcrypt
 
-from . import models
+from . import models   # your existing user system
 
 
 def create_app():
     app = Flask(__name__)
     CORS(app, supports_credentials=True)
 
-    # Secret key for sessions (for now hard-coded)
+    # Secret key for sessions
     app.config["SECRET_KEY"] = "change-this-later"
 
-    # ---- Seed in-memory users once at startup ----
+    # Seed in-memory demo users
     models.seed_users()
     print("Seeded default admin user: admin@example.com / admin123")
 
-    # ---- Small helpers ----
+    # -------------------------
+    # Helpers
+    # -------------------------
     def require_login(f):
         def wrapper(*args, **kwargs):
             if "user_id" not in session:
                 return jsonify({"error": "Login required"}), 401
             return f(*args, **kwargs)
+
         wrapper.__name__ = f.__name__
         return wrapper
 
@@ -29,17 +34,23 @@ def create_app():
         @require_login
         def wrapper(*args, **kwargs):
             if session.get("role") != "admin":
-                return jsonify({"error": "Admin access only"}), 403
+                return jsonify({"error": "Admin only"}), 403
             return f(*args, **kwargs)
+
         wrapper.__name__ = f.__name__
         return wrapper
 
-    # ---- Routes ----
+    # =============================================================
+    # ROUTES
+    # =============================================================
 
     @app.route("/api/health", methods=["GET"])
     def health():
         return jsonify({"status": "ok"})
 
+    # -------------------------
+    # AUTH
+    # -------------------------
     @app.route("/api/login", methods=["POST"])
     def login():
         data = request.get_json() or {}
@@ -79,9 +90,37 @@ def create_app():
         session.clear()
         return jsonify({"message": "Logged out"})
 
+
+
+    # =============================================================
+    # PRODUCTS API (SQLite)
+    # =============================================================
+
+    @app.get("/api/products")
+    def get_products():
+        """Return all products from backend/products.db"""
+
+        # --- absolute path to backend/products.db ---
+        BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+        DB_PATH = os.path.join(BASE_DIR, "products.db")
+
+        conn = sqlite3.connect(DB_PATH)
+        conn.row_factory = sqlite3.Row
+        cur = conn.cursor()
+
+        rows = cur.execute("SELECT * FROM products").fetchall()
+        products = [dict(row) for row in rows]
+
+        conn.close()
+        return jsonify(products)
+
+    # END create_app()
     return app
 
 
+# ==============================
+# Run with: py -m backend.app
+# ==============================
 if __name__ == "__main__":
     app = create_app()
     app.run(debug=True)
