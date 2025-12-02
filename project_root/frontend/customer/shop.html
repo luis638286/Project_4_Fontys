@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>FreshMart Shop</title>
+
+  <!-- Same font family as homepage -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+    rel="stylesheet"
+  />
+
+  <link rel="stylesheet" href="shop.css" />
+</head>
+<body>
+  <!-- HEADER (same look as home) -->
+  <header class="header-container">
+    <h1 class="logo">FreshMart</h1>
+    <nav>
+      <ul class="nav-links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="shop.html" class="active-link">Shop</a></li>
+        <li><a href="#">Offers</a></li>
+        <li><a href="#">Contact</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <!-- MAIN LAYOUT -->
+  <main class="shop-layout">
+    <!-- LEFT: search + filters + products -->
+    <section class="shop-main">
+      <!-- Search & filters -->
+      <section class="filter-card">
+        <div class="search-row">
+          <input
+            type="search"
+            placeholder="Search for products..."
+            aria-label="Search products"
+          />
+        </div>
+        <div class="filter-row">
+          <button class="filter-chip active">All</button>
+          <button class="filter-chip">Fruits</button>
+          <button class="filter-chip">Vegetables</button>
+          <button class="filter-chip">Dairy</button>
+          <button class="filter-chip">Bakery</button>
+        </div>
+      </section>
+
+      <!-- Products -->
+      <section class="products-section">
+        <h2 class="section-title">Fresh Products</h2>
+
+        <!-- This grid is EMPTY by default.
+             Your teammates will inject one <article class="product-card"> per product. -->
+        <div id="product-grid" class="product-grid"></div>
+
+        <!-- Empty state text shown until products exist -->
+        <p id="empty-state" class="empty-state">
+          No products available yet. Once products are added to the database,
+          they will appear here in the same card style.
+        </p>
+
+        <!--
+        ===== STRUCTURE EXAMPLE FOR BACKEND/JS TEAM (NOT RENDERED) =====
+
+        <article class="product-card">
+          <div class="product-image-wrap">
+            <img src="IMAGE_URL" alt="Product name" />
+          </div>
+          <div class="product-body">
+            <h3 class="product-name">Red Apples</h3>
+            <p class="product-meta">Fruits · 1 kg</p>
+            <p class="product-price">€2.99 <span>/ kg</span></p>
+            <div class="product-footer">
+              <input type="number" min="1" value="1" class="qty-input" />
+              <button class="add-btn">Add to Cart</button>
+            </div>
+          </div>
+        </article>
+
+        When you add at least one product:
+          - update #product-count in the cart if you want
+          - hide the empty text: document.getElementById("empty-state").style.display = "none";
+        =================================================================
+        -->
+      </section>
+    </section>
+
+    <!-- RIGHT: cart summary (UI only) -->
+    <aside class="cart-panel">
+      <h2 class="cart-title">Your Cart</h2>
+
+      <div class="cart-items">
+        <!-- Cart items will be injected later by JS / backend.
+        Example structure:
+
+        <div class="cart-item">
+          <div>
+            <p class="cart-item-name">Red Apples</p>
+            <p class="cart-item-meta">1 kg · €2.99</p>
+          </div>
+          <div class="cart-item-right">
+            <span class="cart-item-qty">x2</span>
+            <span class="cart-item-total">€5.98</span>
+          </div>
+        </div>
+        -->
+      </div>
+
+      <p class="cart-empty">
+        Your cart is empty. Add items from the shop to see them here.
+      </p>
+
+      <div class="cart-summary">
+        <div class="cart-row">
+          <span>Subtotal</span>
+          <span class="cart-value">€0.00</span>
+        </div>
+      </div>
+
+      <button class="checkout-btn" type="button" disabled>
+        Proceed to Checkout
+      </button>
+    </aside>
+  </main>
+
+  <!-- FOOTER (same style family as home) -->
+  <footer class="footer">
+    <div class="footer-content">
+      <div>
+        <h3>FreshMart</h3>
+        <p>Delivering freshness to your doorstep, every day.</p>
+      </div>
+      <div>
+        <h4>Contact</h4>
+        <p>Email: support@freshmart.com</p>
+        <p>Phone: +1 (800) 555-1234</p>
+      </div>
+      <div>
+        <h4>Opening Hours</h4>
+        <p>Mon–Sat: 8:00 – 21:00</p>
+        <p>Sunday: 9:00 – 18:00</p>
+      </div>
+      <div>
+        <h4>Follow Us</h4>
+        <p>Instagram | Facebook | Twitter</p>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      © 2025 FreshMart Grocery Store. All rights reserved.
+    </div>
+  </footer>
+</body>
+</html>
