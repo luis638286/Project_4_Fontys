@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FreshMart Admin Login</title>
+
+  <!-- Poppins to match main site branding -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="admin.css">
+</head>
+<body class="admin-auth-body">
+  <!-- Animated background elements -->
+  <div class="admin-bg-orb orb-1"></div>
+  <div class="admin-bg-orb orb-2"></div>
+  <div class="admin-bg-orb orb-3"></div>
+
+  <div class="admin-auth-container">
+    <!-- Brand and marketing side -->
+    <section class="admin-auth-left">
+      <div class="admin-logo-mark">🛒</div>
+      <h1 class="admin-brand-name">FreshMart Admin</h1>
+      <p class="admin-tagline">Control center for your online supermarket</p>
+
+      <ul class="admin-feature-list">
+        <li>Monitor orders and fulfillment in real time</li>
+        <li>Track daily and monthly sales performance</li>
+        <li>Manage inventory and featured products</li>
+      </ul>
+
+      <div class="admin-status-pill">
+        <span class="status-dot"></span>
+        Secure backend access
+      </div>
+    </section>
+
+    <!-- Login form side -->
+    <section class="admin-auth-right">
+      <header class="admin-auth-header">
+        <h2>Sign in as admin</h2>
+        <p>Use your admin credentials to access the dashboard</p>
+      </header>
+
+      <div class="auth-error" aria-live="polite"></div>
+
+      <form id="admin-login-form" class="admin-auth-form" autocomplete="off" novalidate>
+        <div class="auth-input-group">
+          <label for="admin-email">Admin email</label>
+          <div class="auth-input-wrapper">
+            <span class="auth-input-icon">@</span>
+            <input
+              type="email"
+              id="admin-email"
+              name="email"
+              placeholder="admin@freshmart.com"
+              required
+            >
+          </div>
+        </div>
+
+        <div class="auth-input-group">
+          <label for="admin-password">Password</label>
+          <div class="auth-input-wrapper">
+            <span class="auth-input-icon">🔒</span>
+            <input
+              type="password"
+              id="admin-password"
+              name="password"
+              placeholder="Enter password"
+              required
+            >
+            <button
+              type="button"
+              class="auth-toggle-password"
+              aria-label="Toggle password visibility"
+            >
+              👁
+            </button>
+          </div>
+        </div>
+
+        <div class="auth-options-row">
+          <label class="auth-remember">
+            <input type="checkbox" id="remember-admin">
+            <span>Remember this device</span>
+          </label>
+          <a href="#" class="auth-link muted-link">Forgot password</a>
+        </div>
+
+        <button type="submit" class="auth-submit-button">
+          <span>Sign in</span>
+          <span class="auth-submit-glow"></span>
+        </button>
+
+        <p class="auth-hint">
+          Default admin credentials
+          <code>admin@freshmart.com</code>
+          <span class="hint-divider">•</span>
+          <code>Admin123!</code>
+        </p>
+      </form>
+    </section>
+  </div>
+
+  <script src="admin.js" defer></script>
+</body>
+</html>

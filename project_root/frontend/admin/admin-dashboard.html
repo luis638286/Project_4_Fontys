@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FreshMart Admin Dashboard</title>
+
+  <!-- Poppins, same as login and main site -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="admin.css">
+</head>
+<body class="admin-dashboard-body">
+  <!-- Background behind full admin layout -->
+  <div class="admin-bg-orb orb-1"></div>
+  <div class="admin-bg-orb orb-2"></div>
+  <div class="admin-bg-orb orb-3"></div>
+
+  <div class="admin-shell">
+    <!-- Sidebar -->
+    <aside class="admin-sidebar">
+      <div class="sidebar-brand">
+        <div class="sidebar-logo-mark">🛒</div>
+        <div class="sidebar-brand-text">
+          <span class="sidebar-brand-title">FreshMart</span>
+          <span class="sidebar-brand-sub">Admin panel</span>
+        </div>
+      </div>
+
+      <nav class="sidebar-nav">
+        <a href="admin-dashboard.html" class="sidebar-link active">
+          <span class="sidebar-icon">📊</span>
+          <span>Dashboard</span>
+        </a>
+        <a href="admin-orders.html" class="sidebar-link">
+          <span class="sidebar-icon">📦</span>
+          <span>Orders</span>
+          <span class="sidebar-badge badge-pill">12</span>
+        </a>
+        <a href="#" class="sidebar-link">
+          <span class="sidebar-icon">🛍️</span>
+          <span>Products</span>
+        </a>
+        <a href="#" class="sidebar-link">
+          <span class="sidebar-icon">👥</span>
+          <span>Customers</span>
+        </a>
+        <a href="#" class="sidebar-link">
+          <span class="sidebar-icon">⚙️</span>
+          <span>Settings</span>
+        </a>
+      </nav>
+
+      <div class="sidebar-footer">
+        <div class="sidebar-status">
+          <span class="status-dot"></span>
+          <span class="status-text">Store online</span>
+        </div>
+        <button class="sidebar-logout" onclick="window.location.href='admin-login.html'">
+          <span>Log out</span>
+        </button>
+      </div>
+    </aside>
+
+    <!-- Main area -->
+    <div class="admin-main">
+      <!-- Top bar -->
+      <header class="admin-topbar">
+        <div class="topbar-left">
+          <div class="topbar-title-group">
+            <h1 class="topbar-title">Overview</h1>
+            <p class="topbar-subtitle">Today at FreshMart online store</p>
+          </div>
+          <div class="topbar-date-pill">
+            <span class="topbar-date-icon">📅</span>
+            <span id="topbar-date-text">Today</span>
+          </div>
+        </div>
+
+        <div class="topbar-right">
+          <div class="topbar-search">
+            <span class="topbar-search-icon">🔍</span>
+            <input
+              type="search"
+              id="topbar-search-input"
+              placeholder="Search orders, customers, products"
+            >
+          </div>
+
+          <button class="topbar-icon-button" aria-label="Notifications">
+            <span class="topbar-icon">🔔</span>
+            <span class="topbar-dot"></span>
+          </button>
+
+          <div class="topbar-user">
+            <div class="topbar-user-meta">
+              <span class="topbar-user-name">Admin</span>
+              <span class="topbar-user-role">Store manager</span>
+            </div>
+            <div class="topbar-avatar">
+              <span>FM</span>
+            </div>
+          </div>
+        </div>
+      </header>
+
+      <!-- Content -->
+      <main class="admin-content">
+        <!-- KPI cards row -->
+        <section class="dashboard-row dashboard-row-kpi">
+          <article class="kpi-card highlight">
+            <div class="kpi-header">
+              <span class="kpi-label">Total revenue</span>
+              <span class="kpi-icon">💳</span>
+            </div>
+            <div class="kpi-main">
+              <span class="kpi-value">$4,820.45</span>
+            </div>
+            <div class="kpi-footer">
+              <span class="kpi-trend up">+18.3%</span>
+              <span class="kpi-note">Compared to yesterday</span>
+            </div>
+          </article>
+
+          <article class="kpi-card">
+            <div class="kpi-header">
+              <span class="kpi-label">Orders</span>
+              <span class="kpi-icon">📦</span>
+            </div>
+            <div class="kpi-main">
+              <span class="kpi-value">128</span>
+            </div>
+            <div class="kpi-footer">
+              <span class="kpi-trend up">+9</span>
+              <span class="kpi-note">New since midnight</span>
+            </div>
+          </article>
+
+          <article class="kpi-card">
+            <div class="kpi-header">
+              <span class="kpi-label">New customers</span>
+              <span class="kpi-icon">👤</span>
+            </div>
+            <div class="kpi-main">
+              <span class="kpi-value">32</span>
+            </div>
+            <div class="kpi-footer">
+              <span class="kpi-trend up">+6</span>
+              <span class="kpi-note">Joined in last 24h</span>
+            </div>
+          </article>
+
+          <article class="kpi-card">
+            <div class="kpi-header">
+              <span class="kpi-label">Low stock</span>
+              <span class="kpi-icon">⚠️</span>
+            </div>
+            <div class="kpi-main">
+              <span class="kpi-value">7</span>
+            </div>
+            <div class="kpi-footer">
+              <span class="kpi-trend warn">Review today</span>
+              <span class="kpi-note">Critical inventory items</span>
+            </div>
+          </article>
+        </section>
+
+        <!-- Middle row: chart + status cards -->
+        <section class="dashboard-row dashboard-row-middle">
+          <article class="panel-card panel-wide">
+            <header class="panel-header">
+              <div class="panel-title-group">
+                <h2 class="panel-title">Sales this week</h2>
+                <p class="panel-subtitle">Revenue trend across the last 7 days</p>
+              </div>
+              <div class="panel-actions">
+                <button class="chip-toggle chip-active">Week</button>
+                <button class="chip-toggle">Month</button>
+                <button class="chip-toggle">Year</button>
+              </div>
+            </header>
+
+            <div class="panel-body">
+              <!-- Simple bar chart built with divs -->
+              <div class="chart-bars">
+                <div class="chart-bar">
+                  <div class="chart-bar-fill" style="height: 48%">
+                    <span class="chart-bar-tooltip">$3.1k</span>
+                  </div>
+                  <span class="chart-bar-label">Mon</span>
+                </div>
+                <div class="chart-bar">
+                  <div class="chart-bar-fill" style="height: 65%">
+                    <span class="chart-bar-tooltip">$4.2k</span>
+                  </div>
+                  <span class="chart-bar-label">Tue</span>
+                </div>
+                <div class="chart-bar active">
+                  <div class="chart-bar-fill" style="height: 82%">
+                    <span class="chart-bar-tooltip">$5.1k</span>
+                  </div>
+                  <span class="chart-bar-label">Wed</span>
+                </div>
+                <div class="chart-bar">
+                  <div class="chart-bar-fill" style="height: 54%">
+                    <span class="chart-bar-tooltip">$3.6k</span>
+                  </div>
+                  <span class="chart-bar-label">Thu</span>
+                </div>
+                <div class="chart-bar">
+                  <div class="chart-bar-fill" style="height: 70%">
+                    <span class="chart-bar-tooltip">$4.6k</span>
+                  </div>
+                  <span class="chart-bar-label">Fri</span>
+                </div>
+                <div class="chart-bar">
+                  <div class="chart-bar-fill" style="height: 62%">
+                    <span class="chart-bar-tooltip">$4.0k</span>
+                  </div>
+                  <span class="chart-bar-label">Sat</span>
+                </div>
+                <div class="chart-bar">
+                  <div class="chart-bar-fill" style="height: 40%">
+                    <span class="chart-bar-tooltip">$2.7k</span>
+                  </div>
+                  <span class="chart-bar-label">Sun</span>
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <article class="panel-card panel-narrow">
+            <header class="panel-header">
+              <div class="panel-title-group">
+                <h2 class="panel-title">Live orders</h2>
+                <p class="panel-subtitle">Current fulfillment pipeline</p>
+              </div>
+            </header>
+
+            <div class="panel-body">
+              <ul class="status-list">
+                <li class="status-item">
+                  <div class="status-item-lead">
+                    <span class="status-dot small status-dot-green"></span>
+                    <span class="status-label">Pending payment</span>
+                  </div>
+                  <div class="status-metric">18</div>
+                </li>
+                <li class="status-item">
+                  <div class="status-item-lead">
+                    <span class="status-dot small status-dot-yellow"></span>
+                    <span class="status-label">Being prepared</span>
+                  </div>
+                  <div class="status-metric">27</div>
+                </li>
+                <li class="status-item">
+                  <div class="status-item-lead">
+                    <span class="status-dot small status-dot-blue"></span>
+                    <span class="status-label">Out for delivery</span>
+                  </div>
+                  <div class="status-metric">14</div>
+                </li>
+                <li class="status-item">
+                  <div class="status-item-lead">
+                    <span class="status-dot small status-dot-gray"></span>
+                    <span class="status-label">Delivered today</span>
+                  </div>
+                  <div class="status-metric">63</div>
+                </li>
+              </ul>
+            </div>
+          </article>
+        </section>
+
+        <!-- Bottom row: recent orders + popular products -->
+        <section class="dashboard-row dashboard-row-bottom">
+          <article class="panel-card panel-wide">
+            <header class="panel-header">
+              <div class="panel-title-group">
+                <h2 class="panel-title">Recent orders</h2>
+                <p class="panel-subtitle">Latest 6 orders across channels</p>
+              </div>
+              <div class="panel-actions">
+                <button
+                  type="button"
+                  class="chip-link"
+                  onclick="window.location.href='admin-orders.html'"
+                >
+                  View all
+                </button>
+              </div>
+            </header>
+
+            <div class="panel-body">
+              <div class="table-wrapper">
+                <table class="orders-table">
+                  <thead>
+                    <tr>
+                      <th>#ID</th>
+                      <th>Customer</th>
+                      <th>Items</th>
+                      <th>Total</th>
+                      <th>Status</th>
+                      <th>Placed at</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>#FM-1048</td>
+                      <td>Sarah Lee</td>
+                      <td>Fresh fruits pack</td>
+                      <td>$38.40</td>
+                      <td><span class="status-pill status-pill-green">Delivered</span></td>
+                      <td>Today, 09:21</td>
+                    </tr>
+                    <tr>
+                      <td>#FM-1047</td>
+                      <td>Daniel Carter</td>
+                      <td>Dairy and bakery</td>
+                      <td>$24.10</td>
+                      <td><span class="status-pill status-pill-blue">On the way</span></td>
+                      <td>Today, 08:47</td>
+                    </tr>
+                    <tr>
+                      <td>#FM-1046</td>
+                      <td>Aisha Malik</td>
+                      <td>Weekly groceries</td>
+                      <td>$86.75</td>
+                      <td><span class="status-pill status-pill-yellow">Preparing</span></td>
+                      <td>Today, 08:05</td>
+                    </tr>
+                    <tr>
+                      <td>#FM-1045</td>
+                      <td>Lucas Romero</td>
+                      <td>Vegetable bundle</td>
+                      <td>$19.60</td>
+                      <td><span class="status-pill status-pill-gray">Pending</span></td>
+                      <td>Today, 07:54</td>
+                    </tr>
+                    <tr>
+                      <td>#FM-1044</td>
+                      <td>Emma Wilson</td>
+                      <td>Organic essentials</td>
+                      <td>$52.30</td>
+                      <td><span class="status-pill status-pill-green">Delivered</span></td>
+                      <td>Today, 07:12</td>
+                    </tr>
+                    <tr>
+                      <td>#FM-1043</td>
+                      <td>Omar Ali</td>
+                      <td>Snacks and drinks</td>
+                      <td>$27.90</td>
+                      <td><span class="status-pill status-pill-blue">On the way</span></td>
+                      <td>Today, 06:58</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </article>
+
+          <article class="panel-card panel-narrow">
+            <header class="panel-header">
+              <div class="panel-title-group">
+                <h2 class="panel-title">Popular categories</h2>
+                <p class="panel-subtitle">Top performing sections today</p>
+              </div>
+            </header>
+
+            <div class="panel-body">
+              <ul class="category-metric-list">
+                <li class="category-metric-item">
+                  <div class="category-metric-main">
+                    <span class="category-dot category-dot-green"></span>
+                    <span class="category-name">Fresh fruits</span>
+                  </div>
+                  <div class="category-metric-stats">
+                    <span class="category-orders">42 orders</span>
+                    <span class="category-revenue">$820</span>
+                  </div>
+                </li>
+                <li class="category-metric-item">
+                  <div class="category-metric-main">
+                    <span class="category-dot category-dot-yellow"></span>
+                    <span class="category-name">Vegetables</span>
+                  </div>
+                  <div class="category-metric-stats">
+                    <span class="category-orders">36 orders</span>
+                    <span class="category-revenue">$640</span>
+                  </div>
+                </li>
+                <li class="category-metric-item">
+                  <div class="category-metric-main">
+                    <span class="category-dot category-dot-blue"></span>
+                    <span class="category-name">Dairy</span>
+                  </div>
+                  <div class="category-metric-stats">
+                    <span class="category-orders">29 orders</span>
+                    <span class="category-revenue">$510</span>
+                  </div>
+                </li>
+                <li class="category-metric-item">
+                  <div class="category-metric-main">
+                    <span class="category-dot category-dot-pink"></span>
+                    <span class="category-name">Bakery</span>
+                  </div>
+                  <div class="category-metric-stats">
+                    <span class="category-orders">21 orders</span>
+                    <span class="category-revenue">$340</span>
+                  </div>
+                </li>
+              </ul>
+            </div>
+          </article>
+        </section>
+      </main>
+    </div>
+  </div>
+
+  <script src="admin.js" defer></script>
+</body>
+</html>

@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FreshMart Admin Orders</title>
+
+  <!-- Poppins, same as login and dashboard -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="admin.css">
+</head>
+<body class="admin-dashboard-body">
+  <div class="admin-bg-orb orb-1"></div>
+  <div class="admin-bg-orb orb-2"></div>
+  <div class="admin-bg-orb orb-3"></div>
+
+  <div class="admin-shell">
+    <!-- Sidebar -->
+    <aside class="admin-sidebar">
+      <div class="sidebar-brand">
+        <div class="sidebar-logo-mark">🛒</div>
+        <div class="sidebar-brand-text">
+          <span class="sidebar-brand-title">FreshMart</span>
+          <span class="sidebar-brand-sub">Admin panel</span>
+        </div>
+      </div>
+
+      <nav class="sidebar-nav">
+        <a href="admin-dashboard.html" class="sidebar-link">
+          <span class="sidebar-icon">📊</span>
+          <span>Dashboard</span>
+        </a>
+        <a href="admin-orders.html" class="sidebar-link active">
+          <span class="sidebar-icon">📦</span>
+          <span>Orders</span>
+          <span class="sidebar-badge badge-pill">128</span>
+        </a>
+        <a href="#" class="sidebar-link">
+          <span class="sidebar-icon">🛍️</span>
+          <span>Products</span>
+        </a>
+        <a href="#" class="sidebar-link">
+          <span class="sidebar-icon">👥</span>
+          <span>Customers</span>
+        </a>
+        <a href="#" class="sidebar-link">
+          <span class="sidebar-icon">⚙️</span>
+          <span>Settings</span>
+        </a>
+      </nav>
+
+      <div class="sidebar-footer">
+        <div class="sidebar-status">
+          <span class="status-dot"></span>
+          <span class="status-text">Store online</span>
+        </div>
+        <button class="sidebar-logout" onclick="window.location.href='admin-login.html'">
+          <span>Log out</span>
+        </button>
+      </div>
+    </aside>
+
+    <!-- Main area -->
+    <div class="admin-main">
+      <!-- Top bar -->
+      <header class="admin-topbar">
+        <div class="topbar-left">
+          <div class="topbar-title-group">
+            <h1 class="topbar-title">Orders</h1>
+            <p class="topbar-subtitle">Manage and track all customer orders</p>
+          </div>
+        </div>
+
+        <div class="topbar-right">
+          <div class="topbar-search">
+            <span class="topbar-search-icon">🔍</span>
+            <input
+              type="search"
+              id="orders-search-input"
+              placeholder="Search by ID, customer, or items"
+            >
+          </div>
+
+          <button class="topbar-icon-button" aria-label="Notifications">
+            <span class="topbar-icon">🔔</span>
+            <span class="topbar-dot"></span>
+          </button>
+
+          <div class="topbar-user">
+            <div class="topbar-user-meta">
+              <span class="topbar-user-name">Admin</span>
+              <span class="topbar-user-role">Store manager</span>
+            </div>
+            <div class="topbar-avatar">
+              <span>FM</span>
+            </div>
+          </div>
+        </div>
+      </header>
+
+      <!-- Content -->
+      <main class="admin-content">
+        <!-- Filters row -->
+        <section class="orders-filters-row">
+          <div class="filters-group">
+            <div class="filter-block">
+              <label for="filter-status" class="filter-label">Status</label>
+              <div class="filter-select-wrapper">
+                <select id="filter-status" class="filter-select">
+                  <option value="all">All statuses</option>
+                  <option value="pending">Pending payment</option>
+                  <option value="preparing">Preparing</option>
+                  <option value="on_the_way">On the way</option>
+                  <option value="delivered">Delivered</option>
+                  <option value="canceled">Canceled</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="filter-block">
+              <label for="filter-date-from" class="filter-label">From</label>
+              <input
+                type="date"
+                id="filter-date-from"
+                class="filter-input"
+              >
+            </div>
+
+            <div class="filter-block">
+              <label for="filter-date-to" class="filter-label">To</label>
+              <input
+                type="date"
+                id="filter-date-to"
+                class="filter-input"
+              >
+            </div>
+
+            <div class="filter-block">
+              <label for="filter-channel" class="filter-label">Channel</label>
+              <div class="filter-select-wrapper">
+                <select id="filter-channel" class="filter-select">
+                  <option value="all">All channels</option>
+                  <option value="web">Website</option>
+                  <option value="app">Mobile app</option>
+                  <option value="instore">In store</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <div class="filters-actions">
+            <button type="button" class="chip-toggle chip-active">Today</button>
+            <button type="button" class="chip-toggle">Last 7 days</button>
+            <button type="button" class="chip-toggle">This month</button>
+            <button type="button" class="orders-reset-button">Reset</button>
+          </div>
+        </section>
+
+        <!-- Main orders layout: table + side panel -->
+        <section class="orders-layout">
+          <article class="panel-card panel-orders-main">
+            <header class="panel-header">
+              <div class="panel-title-group">
+                <h2 class="panel-title">All orders</h2>
+                <p class="panel-subtitle">Showing 12 of 128 orders today</p>
+              </div>
+              <div class="panel-actions">
+                <button type="button" class="chip-link">Export CSV</button>
+                <button type="button" class="chip-link">Print</button>
+              </div>
+            </header>
+
+            <div class="panel-body">
+              <div class="table-wrapper table-wrapper-scroll">
+                <table class="orders-table orders-table-clickable">
+                  <thead>
+                    <tr>
+                      <th>#ID</th>
+                      <th>Customer</th>
+                      <th>Items</th>
+                      <th>Total</th>
+                      <th>Payment</th>
+                      <th>Status</th>
+                      <th>Placed at</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr class="order-row order-row-active" data-order-id="FM-1048">
+                      <td>#FM-1048</td>
+                      <td>Sarah Lee</td>
+                      <td>Fresh fruits pack</td>
+                      <td>$38.40</td>
+                      <td><span class="status-pill status-pill-green-soft">Paid</span></td>
+                      <td><span class="status-pill status-pill-green">Delivered</span></td>
+                      <td>Today, 09:21</td>
+                    </tr>
+                    <tr class="order-row" data-order-id="FM-1047">
+                      <td>#FM-1047</td>
+                      <td>Daniel Carter</td>
+                      <td>Dairy and bakery</td>
+                      <td>$24.10</td>
+                      <td><span class="status-pill status-pill-green-soft">Paid</span></td>
+                      <td><span class="status-pill status-pill-blue">On the way</span></td>
+                      <td>Today, 08:47</td>
+                    </tr>
+                    <tr class="order-row" data-order-id="FM-1046">
+                      <td>#FM-1046</td>
+                      <td>Aisha Malik</td>
+                      <td>Weekly groceries</td>
+                      <td>$86.75</td>
+                      <td><span class="status-pill status-pill-yellow-soft">Pending</span></td>
+                      <td><span class="status-pill status-pill-yellow">Preparing</span></td>
+                      <td>Today, 08:05</td>
+                    </tr>
+                    <tr class="order-row" data-order-id="FM-1045">
+                      <td>#FM-1045</td>
+                      <td>Lucas Romero</td>
+                      <td>Vegetable bundle</td>
+                      <td>$19.60</td>
+                      <td><span class="status-pill status-pill-gray-soft">Pending</span></td>
+                      <td><span class="status-pill status-pill-gray">Pending payment</span></td>
+                      <td>Today, 07:54</td>
+                    </tr>
+                    <tr class="order-row" data-order-id="FM-1044">
+                      <td>#FM-1044</td>
+                      <td>Emma Wilson</td>
+                      <td>Organic essentials</td>
+                      <td>$52.30</td>
+                      <td><span class="status-pill status-pill-green-soft">Paid</span></td>
+                      <td><span class="status-pill status-pill-green">Delivered</span></td>
+                      <td>Today, 07:12</td>
+                    </tr>
+                    <tr class="order-row" data-order-id="FM-1043">
+                      <td>#FM-1043</td>
+                      <td>Omar Ali</td>
+                      <td>Snacks and drinks</td>
+                      <td>$27.90</td>
+                      <td><span class="status-pill status-pill-green-soft">Paid</span></td>
+                      <td><span class="status-pill status-pill-blue">On the way</span></td>
+                      <td>Today, 06:58</td>
+                    </tr>
+                    <tr class="order-row" data-order-id="FM-1042">
+                      <td>#FM-1042</td>
+                      <td>Ana Silva</td>
+                      <td>Family basket</td>
+                      <td>$104.20</td>
+                      <td><span class="status-pill status-pill-green-soft">Paid</span></td>
+                      <td><span class="status-pill status-pill-yellow">Preparing</span></td>
+                      <td>Today, 06:22</td>
+                    </tr>
+                    <tr class="order-row" data-order-id="FM-1041">
+                      <td>#FM-1041</td>
+                      <td>James Brown</td>
+                      <td>Bakery selection</td>
+                      <td>$18.90</td>
+                      <td><span class="status-pill status-pill-green-soft">Paid</span></td>
+                      <td><span class="status-pill status-pill-green">Delivered</span></td>
+                      <td>Today, 05:40</td>
+                    </tr>
+                    <tr class="order-row" data-order-id="FM-1040">
+                      <td>#FM-1040</td>
+                      <td>Maria Rossi</td>
+                      <td>Fresh vegetables</td>
+                      <td>$29.75</td>
+                      <td><span class="status-pill status-pill-gray-soft">Pending</span></td>
+                      <td><span class="status-pill status-pill-gray">Pending payment</span></td>
+                      <td>Today, 05:18</td>
+                    </tr>
+                    <tr class="order-row" data-order-id="FM-1039">
+                      <td>#FM-1039</td>
+                      <td>Tom Clark</td>
+                      <td>Party drinks</td>
+                      <td>$61.40</td>
+                      <td><span class="status-pill status-pill-green-soft">Paid</span></td>
+                      <td><span class="status-pill status-pill-blue">On the way</span></td>
+                      <td>Today, 04:55</td>
+                    </tr>
+                    <tr class="order-row" data-order-id="FM-1038">
+                      <td>#FM-1038</td>
+                      <td>Linda Nguyen</td>
+                      <td>Gluten free basket</td>
+                      <td>$47.90</td>
+                      <td><span class="status-pill status-pill-green-soft">Paid</span></td>
+                      <td><span class="status-pill status-pill-green">Delivered</span></td>
+                      <td>Today, 04:22</td>
+                    </tr>
+                    <tr class="order-row" data-order-id="FM-1037">
+                      <td>#FM-1037</td>
+                      <td>George Miller</td>
+                      <td>Breakfast essentials</td>
+                      <td>$23.60</td>
+                      <td><span class="status-pill status-pill-red-soft">Refunded</span></td>
+                      <td><span class="status-pill status-pill-red">Canceled</span></td>
+                      <td>Today, 03:58</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+
+              <div class="orders-footer">
+                <div class="orders-count">
+                  Showing 12 of 128 orders
+                </div>
+                <div class="orders-pagination">
+                  <button class="pagination-button" disabled>Previous</button>
+                  <span class="pagination-pages">
+                    <button class="pagination-page active">1</button>
+                    <button class="pagination-page">2</button>
+                    <button class="pagination-page">3</button>
+                    <span class="pagination-dots">…</span>
+                    <button class="pagination-page">8</button>
+                  </span>
+                  <button class="pagination-button">Next</button>
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <aside class="panel-card panel-orders-details">
+            <header class="panel-header">
+              <div class="panel-title-group">
+                <h2 class="panel-title">Order details</h2>
+                <p class="panel-subtitle" id="details-subtitle">Order #FM-1048, Sarah Lee</p>
+              </div>
+            </header>
+
+            <div class="panel-body orders-details-body">
+              <div class="details-section">
+                <h3 class="details-title">Summary</h3>
+                <div class="details-row">
+                  <span class="details-label">Order ID</span>
+                  <span class="details-value" id="details-id">#FM-1048</span>
+                </div>
+                <div class="details-row">
+                  <span class="details-label">Customer</span>
+                  <span class="details-value" id="details-customer">Sarah Lee</span>
+                </div>
+                <div class="details-row">
+                  <span class="details-label">Placed at</span>
+                  <span class="details-value" id="details-time">Today, 09:21</span>
+                </div>
+                <div class="details-row">
+                  <span class="details-label">Total</span>
+                  <span class="details-value" id="details-total">$38.40</span>
+                </div>
+                <div class="details-row">
+                  <span class="details-label">Payment</span>
+                  <span class="details-value" id="details-payment">
+                    <span class="status-pill status-pill-green-soft">Paid · Card</span>
+                  </span>
+                </div>
+                <div class="details-row">
+                  <span class="details-label">Status</span>
+                  <span class="details-value" id="details-status">
+                    <span class="status-pill status-pill-green">Delivered</span>
+                  </span>
+                </div>
+              </div>
+
+              <div class="details-section">
+                <h3 class="details-title">Delivery</h3>
+                <p class="details-text" id="details-address">
+                  24 Green Market Street, Apartment 3B<br>
+                  Springfield, CA 90210<br>
+                  Phone: +1 555 234 987
+                </p>
+              </div>
+
+              <div class="details-section">
+                <h3 class="details-title">Items</h3>
+                <ul class="details-items-list" id="details-items">
+                  <li class="details-item-row">
+                    <div>
+                      <span class="item-name">Seasonal fruit mix</span>
+                      <span class="item-meta">2 × $12.00</span>
+                    </div>
+                    <span class="item-total">$24.00</span>
+                  </li>
+                  <li class="details-item-row">
+                    <div>
+                      <span class="item-name">Organic yogurt</span>
+                      <span class="item-meta">4 × $2.10</span>
+                    </div>
+                    <span class="item-total">$8.40</span>
+                  </li>
+                  <li class="details-item-row">
+                    <div>
+                      <span class="item-name">Whole grain bread</span>
+                      <span class="item-meta">1 × $3.90</span>
+                    </div>
+                    <span class="item-total">$3.90</span>
+                  </li>
+                </ul>
+              </div>
+
+              <div class="details-section">
+                <h3 class="details-title">Actions</h3>
+                <div class="details-actions">
+                  <button type="button" class="chip-toggle chip-active small">Mark as delivered</button>
+                  <button type="button" class="chip-toggle small">Contact customer</button>
+                  <button type="button" class="chip-toggle small danger">Cancel order</button>
+                </div>
+              </div>
+            </div>
+          </aside>
+        </section>
+      </main>
+    </div>
+  </div>
+
+  <script src="admin.js" defer></script>
+</body>
+</html>
