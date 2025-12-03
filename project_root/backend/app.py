@@ -12,9 +12,10 @@ def create_app():
     # Secret key for sessions (for now hard-coded)
     app.config["SECRET_KEY"] = "change-this-later"
 
-    # ---- Seed in-memory users once at startup ----
+    # ---- Seed in-memory data once at startup ----
     models.seed_users()
-    print("Seeded default admin user: admin@example.com / admin123")
+    models.seed_products()
+    print("Seeded admin user and sample products")
 
     # ---- Small helpers ----
     def require_login(f):
@@ -39,6 +40,8 @@ def create_app():
     @app.route("/api/health", methods=["GET"])
     def health():
         return jsonify({"status": "ok"})
+
+    # ---------- Auth ----------
 
     @app.route("/api/login", methods=["POST"])
     def login():
@@ -78,6 +81,66 @@ def create_app():
     def logout():
         session.clear()
         return jsonify({"message": "Logged out"})
+
+    # ---------- Products ----------
+
+    @app.route("/api/products", methods=["GET"])
+    def list_products():
+        products = models.get_all_products()
+        return jsonify(products)
+
+    @app.route("/api/products", methods=["POST"])
+    @require_admin
+    def add_product():
+        data = request.get_json() or {}
+        name = data.get("name")
+        price = data.get("price")
+        stock = data.get("stock", 0)
+
+        if not name or price is None:
+            return jsonify({"error": "name and price are required"}), 400
+
+        try:
+            price = float(price)
+            stock = int(stock)
+        except ValueError:
+            return jsonify({"error": "price must be number, stock must be integer"}), 400
+
+        product = models.create_product(name, price, stock)
+        return jsonify(product), 201
+
+    @app.route("/api/products/<int:product_id>", methods=["PUT"])
+    @require_admin
+    def edit_product(product_id):
+        data = request.get_json() or {}
+        name = data.get("name")
+        price = data.get("price")
+        stock = data.get("stock")
+
+        if not name or price is None or stock is None:
+            return jsonify({"error": "name, price and stock are required"}), 400
+
+        try:
+            price = float(price)
+            stock = int(stock)
+        except ValueError:
+            return jsonify({"error": "price must be number, stock must be integer"}), 400
+
+        product = models.update_product(product_id, name, price, stock)
+        if not product:
+            return jsonify({"error": "Product not found"}), 404
+
+        return jsonify(product)
+
+    @app.route("/api/products/<int:product_id>", methods=["DELETE"])
+    @require_admin
+    def remove_product(product_id):
+        product = models.get_product_by_id(product_id)
+        if not product:
+            return jsonify({"error": "Product not found"}), 404
+
+        models.delete_product(product_id)
+        return jsonify({"message": "Product deleted"})
 
     return app
 
