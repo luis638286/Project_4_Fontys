@@ -1,0 +1,71 @@
+/* Product Creation Card */
+.product-card {
+    background: rgba(15, 23, 42, 0.95);
+    border-radius: var(--fm-radius-lg);
+    border: 1px solid rgba(148, 163, 184, 0.45);
+    padding: 24px;
+    max-width: 520px;
+    margin: 20px auto;
+    box-shadow: var(--fm-shadow-strong);
+    animation: card-enter 0.7s cubic-bezier(0.21, 0.9, 0.32, 1.2) both;
+}
+
+.product-card-title {
+    font-size: 20px;
+    font-weight: 600;
+    margin-bottom: 18px;
+}
+
+.product-form {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+}
+
+.form-row label {
+    font-size: 13px;
+    color: var(--fm-text-muted);
+    margin-bottom: 6px;
+}
+
+.product-input {
+    width: 100%;
+    padding: 12px;
+    border-radius: var(--fm-radius-md);
+    border: 1px solid var(--fm-border-soft);
+    background: rgba(15, 23, 42, 0.92);
+    color: var(--fm-text-main);
+    font-size: 14px;
+    outline: none;
+    transition: 0.25s;
+}
+
+.product-input:focus {
+    border-color: var(--fm-green);
+    box-shadow: 0 0 0 1px var(--fm-green);
+    background: rgba(15, 23, 42, 0.98);
+}
+
+.product-submit-btn {
+    width: 100%;
+    padding: 12px;
+    border-radius: 999px;
+    border: none;
+    cursor: pointer;
+    font-size: 15px;
+    font-weight: 600;
+    color: #052e16;
+    background: linear-gradient(to right, var(--fm-green), var(--fm-green-deep));
+    box-shadow: 0 16px 36px rgba(34, 197, 94, 0.7);
+    transition: 0.25s;
+}
+
+.product-submit-btn:hover {
+    transform: translateY(-1px) scale(1.02);
+    filter: brightness(1.05);
+}
+
+.product-message {
+    margin-top: 12px;
+    font-size: 14px;
+}
