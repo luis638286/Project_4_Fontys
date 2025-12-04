@@ -23,8 +23,8 @@
       <ul class="nav-links">
         <li><a href="index.html">Home</a></li>
         <li><a href="shop.html" class="active-link">Shop</a></li>
-        <li><a href="#">Offers</a></li>
-        <li><a href="#">Contact</a></li>
+        <li><a href="index.html#deals">Offers</a></li>
+        <li><a href="#footer">Contact</a></li>
       </ul>
     </nav>
   </header>
@@ -64,6 +64,8 @@
           No products available yet. Once products are added to the database,
           they will appear here in the same card style.
         </p>
+
+        <p id="shop-error" class="empty-state" style="color: #ef4444;"></p>
 
         <!--
         ===== STRUCTURE EXAMPLE FOR BACKEND/JS TEAM (NOT RENDERED) =====
@@ -130,7 +132,7 @@
   </main>
 
   <!-- FOOTER (same style family as home) -->
-  <footer class="footer">
+  <footer class="footer" id="footer">
     <div class="footer-content">
       <div>
         <h3>FreshMart</h3>
@@ -156,109 +158,9 @@
     </div>
   </footer>
 
-  <script>
-const API_URL = "http://localhost:5000/api/products";  // backend teammate will confirm
-
-async function loadProducts() {
-    try {
-        const res = await fetch(API_URL);
-        const data = await res.json();
-
-        const grid = document.getElementById("product-grid");
-        const empty = document.getElementById("empty-state");
-
-        // Clear grid
-        grid.innerHTML = "";
-
-        if (data.length === 0) {
-            empty.style.display = "block";
-            return;
-        }
-
-        empty.style.display = "none";
-
-        data.forEach(p => {
-            grid.innerHTML += `
-                <article class="product-card">
-                  <div class="product-image-wrap">
-                    <img src="${p.image_url}" alt="${p.name}">
-                  </div>
-
-                  <div class="product-body">
-                    <h3 class="product-name">${p.name}</h3>
-                    <p class="product-meta">${p.category}</p>
-
-                    <p class="product-price">€${p.price.toFixed(2)}</p>
-
-                    <div class="product-footer">
-                      <input type="number" min="1" value="1" class="qty-input" />
-                      <button class="add-btn">Add to Cart</button>
-                    </div>
-                  </div>
-                </article>
-            `;
-        });
-
-    } catch (err) {
-        console.error("Failed to load products:", err);
-    }
-}
-
-loadProducts();
-
-// Filter buttons
-const chips = document.querySelectorAll(".filter-chip");
-
-chips.forEach(chip => {
-    chip.addEventListener("click", () => {
-        chips.forEach(c => c.classList.remove("active"));
-        chip.classList.add("active");
-
-        const category = chip.textContent.trim();
-        applyFilter(category);
-    });
-});
-
-async function applyFilter(category) {
-    const res = await fetch(API_URL);
-    const data = await res.json();
-
-    const grid = document.getElementById("product-grid");
-    const empty = document.getElementById("empty-state");
-
-    // Filter logic
-    const filtered = (category === "All")
-        ? data
-        : data.filter(p => p.category === category);
-
-    grid.innerHTML = "";
-
-    if (filtered.length === 0) {
-        empty.style.display = "block";
-        return;
-    }
-
-    empty.style.display = "none";
-
-    filtered.forEach(p => {
-        grid.innerHTML += `
-        <article class="product-card">
-          <div class="product-image-wrap">
-            <img src="${p.image_url}" alt="${p.name}">
-          </div>
-          <div class="product-body">
-            <h3 class="product-name">${p.name}</h3>
-            <p class="product-meta">${p.category}</p>
-            <p class="product-price">€${p.price.toFixed(2)}</p>
-            <div class="product-footer">
-              <input type="number" min="1" value="1" class="qty-input" />
-              <button class="add-btn">Add to Cart</button>
-            </div>
-          </div>
-        </article>`;
-    });
-}
-</script>
+  <script src="../assets/js/config.js" defer></script>
+  <script src="../assets/js/api.js" defer></script>
+  <script src="js/shop.js" defer></script>
 
 </body>
 </html>

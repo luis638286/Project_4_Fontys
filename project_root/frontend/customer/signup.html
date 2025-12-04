@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>FreshMart - Signup</title>
     <link rel="stylesheet" href="signup-style.css">
-     
 </head>
 <body>
     <div class="signup-container">
@@ -27,7 +26,23 @@
                 <p>Sign up to create your account</p>
             </div>
 
-            <form>
+            <form id="signup-form" novalidate>
+                <div class="input-row">
+                    <div class="input-group">
+                        <label for="first-name">First name</label>
+                        <div class="input-wrapper">
+                            <input type="text" id="first-name" placeholder="Jane" required>
+                        </div>
+                    </div>
+
+                    <div class="input-group">
+                        <label for="last-name">Last name</label>
+                        <div class="input-wrapper">
+                            <input type="text" id="last-name" placeholder="Doe" required>
+                        </div>
+                    </div>
+                </div>
+
                 <div class="input-group">
                     <label for="email">Email Address</label>
                     <div class="input-wrapper">
@@ -49,6 +64,8 @@
                     </div>
                 </div>
 
+                <p id="signup-error" class="form-error" role="alert"></p>
+
                 <button type="submit" class="signup-button">Sign Up</button>
             </form>
 
@@ -61,5 +78,9 @@
             </p>
         </div>
     </div>
+
+    <script src="../assets/js/config.js" defer></script>
+    <script src="../assets/js/api.js" defer></script>
+    <script src="signup.js" defer></script>
 </body>
 </html>
