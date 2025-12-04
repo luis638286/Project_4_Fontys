@@ -1,7 +1,5 @@
 (function (global) {
-  const base =
-    (global.APP_CONFIG && global.APP_CONFIG.apiBaseUrl) ||
-    `${window.location.origin}/api`
+  const base = (global.APP_CONFIG && global.APP_CONFIG.apiBaseUrl) || ''
 
   async function handleResponse(res) {
     const data = await res.json().catch(() => ({}))
@@ -45,29 +43,6 @@
     return handleResponse(res)
   }
 
-  async function createOrder(body) {
-    const res = await fetch(`${base}/orders/`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(body),
-    })
-    return handleResponse(res)
-  }
-
-  async function listOrders(userId) {
-    const url = new URL(`${base}/orders/`)
-    if (userId) {
-      url.searchParams.set('user_id', userId)
-    }
-    const res = await fetch(url)
-    return handleResponse(res)
-  }
-
-  async function getOrder(id) {
-    const res = await fetch(`${base}/orders/${id}`)
-    return handleResponse(res)
-  }
-
   async function register(body) {
     const res = await fetch(`${base}/auth/register`, {
       method: 'POST',
@@ -101,9 +76,6 @@
     createProduct,
     updateProduct,
     deleteProduct,
-    createOrder,
-    listOrders,
-    getOrder,
     register,
     login,
     listUsers,

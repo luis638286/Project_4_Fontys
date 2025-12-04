@@ -28,30 +28,6 @@ CREATE TABLE IF NOT EXISTS products (
     discount REAL NOT NULL DEFAULT 0,
     is_featured INTEGER NOT NULL DEFAULT 0
 );
-
-CREATE TABLE IF NOT EXISTS orders (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    user_id INTEGER,
-    full_name TEXT NOT NULL,
-    email TEXT NOT NULL,
-    address TEXT,
-    city TEXT,
-    notes TEXT,
-    subtotal REAL NOT NULL DEFAULT 0,
-    total REAL NOT NULL DEFAULT 0,
-    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (user_id) REFERENCES users(id)
-);
-
-CREATE TABLE IF NOT EXISTS order_items (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    order_id INTEGER NOT NULL,
-    product_id INTEGER NOT NULL,
-    quantity INTEGER NOT NULL,
-    price REAL NOT NULL,
-    FOREIGN KEY (order_id) REFERENCES orders(id),
-    FOREIGN KEY (product_id) REFERENCES products(id)
-);
 """
 
 
@@ -163,6 +139,9 @@ def seed_demo_customers(db):
         )
 
     db.commit()
+
+
+    seed_products(db)
 
 
 def seed_products(db):
