@@ -141,6 +141,9 @@ def seed_demo_customers(db):
     db.commit()
 
 
+    seed_products(db)
+
+
 def seed_products(db):
     cur = db.execute("SELECT COUNT(*) as count FROM products")
     count = cur.fetchone()["count"]

@@ -60,6 +60,9 @@ A cleaned-up, sqlite-backed FreshMart demo with a structured Flask API and stati
 - Storefront: open `frontend/customer/shop.html` to browse products backed by the same API.
 - Customer auth: `frontend/customer/signup.html` registers shoppers against the API, and `frontend/customer/login.html` signs them in and redirects to the shop.
 - Admin auth: log in at `frontend/admin/admin-login.html` with the seeded admin user `admin@freshmart.com` / `Admin123!` (created during `init-db`).
+- Admin customers: open `frontend/admin/customers.html` to browse, filter, and export customer profiles.
+- Admin settings: open `frontend/admin/settings.html` to toggle store visibility and update local environment pointers.
+- Storefront: open `frontend/customer/shop.html` to browse products backed by the same API.
 - Update `frontend/assets/js/config.js` if you change the API host/port.
 
 ## Viewing the sqlite database
