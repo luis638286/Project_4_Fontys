@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FreshMart Admin - Customers</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="admin.css">
+</head>
+<body class="admin-dashboard-body">
+  <div class="admin-bg-orb orb-1"></div>
+  <div class="admin-bg-orb orb-2"></div>
+  <div class="admin-bg-orb orb-3"></div>
+
+  <div class="admin-shell">
+    <aside class="admin-sidebar">
+      <div class="sidebar-brand">
+        <div class="sidebar-logo-mark">🛒</div>
+        <div class="sidebar-brand-text">
+          <span class="sidebar-brand-title">FreshMart</span>
+          <span class="sidebar-brand-sub">Admin panel</span>
+        </div>
+      </div>
+
+      <nav class="sidebar-nav">
+        <a href="admin-dashboard.html" class="sidebar-link">
+          <span class="sidebar-icon">📊</span>
+          <span>Dashboard</span>
+        </a>
+        <a href="admin-orders.html" class="sidebar-link">
+          <span class="sidebar-icon">📦</span>
+          <span>Orders</span>
+          <span class="sidebar-badge badge-pill">12</span>
+        </a>
+        <a href="products.html" class="sidebar-link">
+          <span class="sidebar-icon">🛍️</span>
+          <span>Products</span>
+        </a>
+        <a href="customers.html" class="sidebar-link active">
+          <span class="sidebar-icon">👥</span>
+          <span>Customers</span>
+        </a>
+        <a href="settings.html" class="sidebar-link">
+          <span class="sidebar-icon">⚙️</span>
+          <span>Settings</span>
+        </a>
+      </nav>
+
+      <div class="sidebar-footer">
+        <div class="sidebar-status">
+          <span class="status-dot"></span>
+          <span class="status-text">Store online</span>
+        </div>
+        <button class="sidebar-logout" onclick="window.location.href='admin-login.html'">
+          <span>Log out</span>
+        </button>
+      </div>
+    </aside>
+
+    <div class="admin-main">
+      <header class="admin-topbar">
+        <div class="topbar-left">
+          <div class="topbar-title-group">
+            <h1 class="topbar-title">Customers</h1>
+            <p class="topbar-subtitle">Profiles, loyalty, and order history</p>
+          </div>
+        </div>
+
+        <div class="topbar-right">
+          <div class="topbar-search">
+            <span class="topbar-search-icon">🔍</span>
+            <input
+              type="search"
+              id="customer-search-input"
+              placeholder="Search by name, email, or phone"
+            >
+          </div>
+
+          <button class="topbar-icon-button" aria-label="Notifications">
+            <span class="topbar-icon">🔔</span>
+            <span class="topbar-dot"></span>
+          </button>
+
+          <div class="topbar-user">
+            <div class="topbar-user-meta">
+              <span class="topbar-user-name">Admin</span>
+              <span class="topbar-user-role">Store manager</span>
+            </div>
+            <div class="topbar-avatar">
+              <span>FM</span>
+            </div>
+          </div>
+        </div>
+      </header>
+
+      <main class="admin-content">
+        <section class="dashboard-row dashboard-row-kpi">
+          <article class="kpi-card highlight">
+            <div class="kpi-header">
+              <span class="kpi-label">Total customers</span>
+              <span class="kpi-icon">👥</span>
+            </div>
+            <div class="kpi-main">
+              <span class="kpi-value" id="kpi-total-customers">--</span>
+            </div>
+            <div class="kpi-footer">
+              <span class="kpi-trend up" id="kpi-new-customers">+0 today</span>
+              <span class="kpi-note">New sign-ups</span>
+            </div>
+          </article>
+
+          <article class="kpi-card">
+            <div class="kpi-header">
+              <span class="kpi-label">Active loyalty</span>
+              <span class="kpi-icon">🏆</span>
+            </div>
+            <div class="kpi-main">
+              <span class="kpi-value" id="kpi-loyalty">--</span>
+            </div>
+            <div class="kpi-footer">
+              <span class="kpi-trend up" id="kpi-loyalty-change">+0</span>
+              <span class="kpi-note">Gold/Platinum members</span>
+            </div>
+          </article>
+
+          <article class="kpi-card">
+            <div class="kpi-header">
+              <span class="kpi-label">Avg. order value</span>
+              <span class="kpi-icon">💳</span>
+            </div>
+            <div class="kpi-main">
+              <span class="kpi-value" id="kpi-aov">--</span>
+            </div>
+            <div class="kpi-footer">
+              <span class="kpi-trend" id="kpi-aov-note">Across last 30 days</span>
+              <span class="kpi-note">Based on all customers</span>
+            </div>
+          </article>
+
+          <article class="kpi-card">
+            <div class="kpi-header">
+              <span class="kpi-label">At-risk</span>
+              <span class="kpi-icon">⚠️</span>
+            </div>
+            <div class="kpi-main">
+              <span class="kpi-value" id="kpi-at-risk">--</span>
+            </div>
+            <div class="kpi-footer">
+              <span class="kpi-trend warn">Re-engage soon</span>
+              <span class="kpi-note">No orders in 60 days</span>
+            </div>
+          </article>
+        </section>
+
+        <section class="orders-filters-row">
+          <div class="filters-group">
+            <div class="filter-block">
+              <label for="customer-segment" class="filter-label">Segment</label>
+              <div class="filter-select-wrapper">
+                <select id="customer-segment" class="filter-select">
+                  <option value="all">All segments</option>
+                  <option value="Platinum">Platinum</option>
+                  <option value="Gold">Gold</option>
+                  <option value="Silver">Silver</option>
+                  <option value="New">New</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="filter-block">
+              <label for="customer-status" class="filter-label">Status</label>
+              <div class="filter-select-wrapper">
+                <select id="customer-status" class="filter-select">
+                  <option value="all">All statuses</option>
+                  <option value="active">Active</option>
+                  <option value="at_risk">At risk</option>
+                  <option value="inactive">Inactive</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="filter-block">
+              <label for="customer-min-orders" class="filter-label">Min orders</label>
+              <input type="number" id="customer-min-orders" class="filter-input" min="0" value="0">
+            </div>
+          </div>
+
+          <div class="filters-actions">
+            <button type="button" class="chip-toggle chip-active" data-quick="all">All time</button>
+            <button type="button" class="chip-toggle" data-quick="30">Last 30 days</button>
+            <button type="button" class="chip-toggle" data-quick="7">Last 7 days</button>
+            <button type="button" class="orders-reset-button" id="customer-reset">Reset</button>
+          </div>
+        </section>
+
+        <section class="orders-layout">
+          <article class="panel-card panel-orders-main">
+            <header class="panel-header">
+              <div class="panel-title-group">
+                <h2 class="panel-title">Customers</h2>
+                <p class="panel-subtitle">Click a row to view profile details</p>
+              </div>
+              <div class="panel-actions">
+                <button type="button" class="chip-link" id="export-customers">Export CSV</button>
+                <button type="button" class="chip-link" id="add-customer">Add customer</button>
+              </div>
+            </header>
+
+            <div class="panel-body">
+              <div class="table-wrapper table-wrapper-scroll">
+                <table class="orders-table orders-table-clickable" id="customers-table">
+                  <thead>
+                    <tr>
+                      <th>Name</th>
+                      <th>Email</th>
+                      <th>Segment</th>
+                      <th>Orders</th>
+                      <th>Total spend</th>
+                      <th>Status</th>
+                      <th>Last order</th>
+                    </tr>
+                  </thead>
+                  <tbody id="customers-table-body"></tbody>
+                </table>
+              </div>
+            </div>
+          </article>
+
+          <article class="panel-card panel-narrow" id="customer-detail-card">
+            <header class="panel-header">
+              <div class="panel-title-group">
+                <h2 class="panel-title" id="customer-detail-name">Select a customer</h2>
+                <p class="panel-subtitle" id="customer-detail-email">Details will appear here</p>
+              </div>
+            </header>
+
+            <div class="panel-body customer-detail-body">
+              <div class="customer-detail-meta">
+                <div>
+                  <span class="customer-detail-label">Phone</span>
+                  <span id="customer-detail-phone" class="customer-detail-value">—</span>
+                </div>
+                <div>
+                  <span class="customer-detail-label">Address</span>
+                  <span id="customer-detail-address" class="customer-detail-value">—</span>
+                </div>
+                <div>
+                  <span class="customer-detail-label">Membership</span>
+                  <span id="customer-detail-segment" class="customer-detail-pill">—</span>
+                </div>
+                <div>
+                  <span class="customer-detail-label">Orders</span>
+                  <span id="customer-detail-orders" class="customer-detail-value">—</span>
+                </div>
+                <div>
+                  <span class="customer-detail-label">Total spend</span>
+                  <span id="customer-detail-spend" class="customer-detail-value">—</span>
+                </div>
+                <div>
+                  <span class="customer-detail-label">Last order</span>
+                  <span id="customer-detail-last-order" class="customer-detail-value">—</span>
+                </div>
+              </div>
+
+              <div class="customer-detail-actions">
+                <button class="btn-secondary" id="email-customer">Email customer</button>
+                <button class="btn-primary" id="view-orders">Open orders page</button>
+              </div>
+
+              <div class="customer-note" id="customer-detail-note">Select a customer to see notes.</div>
+            </div>
+          </article>
+        </section>
+      </main>
+    </div>
+  </div>
+
+  <script src="customers.js" defer></script>
+</body>
+</html>

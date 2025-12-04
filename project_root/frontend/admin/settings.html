@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FreshMart Admin - Settings</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="admin.css">
+</head>
+<body class="admin-dashboard-body">
+  <div class="admin-bg-orb orb-1"></div>
+  <div class="admin-bg-orb orb-2"></div>
+  <div class="admin-bg-orb orb-3"></div>
+
+  <div class="admin-shell">
+    <aside class="admin-sidebar">
+      <div class="sidebar-brand">
+        <div class="sidebar-logo-mark">🛒</div>
+        <div class="sidebar-brand-text">
+          <span class="sidebar-brand-title">FreshMart</span>
+          <span class="sidebar-brand-sub">Admin panel</span>
+        </div>
+      </div>
+
+      <nav class="sidebar-nav">
+        <a href="admin-dashboard.html" class="sidebar-link">
+          <span class="sidebar-icon">📊</span>
+          <span>Dashboard</span>
+        </a>
+        <a href="admin-orders.html" class="sidebar-link">
+          <span class="sidebar-icon">📦</span>
+          <span>Orders</span>
+          <span class="sidebar-badge badge-pill">12</span>
+        </a>
+        <a href="products.html" class="sidebar-link">
+          <span class="sidebar-icon">🛍️</span>
+          <span>Products</span>
+        </a>
+        <a href="customers.html" class="sidebar-link">
+          <span class="sidebar-icon">👥</span>
+          <span>Customers</span>
+        </a>
+        <a href="settings.html" class="sidebar-link active">
+          <span class="sidebar-icon">⚙️</span>
+          <span>Settings</span>
+        </a>
+      </nav>
+
+      <div class="sidebar-footer">
+        <div class="sidebar-status">
+          <span class="status-dot"></span>
+          <span class="status-text">Store online</span>
+        </div>
+        <button class="sidebar-logout" onclick="window.location.href='admin-login.html'">
+          <span>Log out</span>
+        </button>
+      </div>
+    </aside>
+
+    <div class="admin-main">
+      <header class="admin-topbar">
+        <div class="topbar-left">
+          <div class="topbar-title-group">
+            <h1 class="topbar-title">Settings</h1>
+            <p class="topbar-subtitle">Control store visibility, contact info, and API usage</p>
+          </div>
+        </div>
+
+        <div class="topbar-right">
+          <div class="topbar-user">
+            <div class="topbar-user-meta">
+              <span class="topbar-user-name">Admin</span>
+              <span class="topbar-user-role">Store manager</span>
+            </div>
+            <div class="topbar-avatar">
+              <span>FM</span>
+            </div>
+          </div>
+        </div>
+      </header>
+
+      <main class="admin-content settings-content">
+        <section class="dashboard-row dashboard-row-middle settings-grid">
+          <article class="panel-card panel-wide">
+            <header class="panel-header">
+              <div class="panel-title-group">
+                <h2 class="panel-title">Store details</h2>
+                <p class="panel-subtitle">Shown on receipts and email notifications</p>
+              </div>
+            </header>
+
+            <div class="panel-body settings-form">
+              <div class="form-row">
+                <label for="store-name">Store name</label>
+                <input id="store-name" type="text" class="filter-input" placeholder="FreshMart" />
+              </div>
+              <div class="form-row">
+                <label for="support-email">Support email</label>
+                <input id="support-email" type="email" class="filter-input" placeholder="support@freshmart.com" />
+              </div>
+              <div class="form-row">
+                <label for="support-phone">Support phone</label>
+                <input id="support-phone" type="tel" class="filter-input" placeholder="+1 555-010-2030" />
+              </div>
+              <div class="form-row">
+                <label for="store-hours">Business hours</label>
+                <input id="store-hours" type="text" class="filter-input" placeholder="Mon - Sat, 8:00 - 20:00" />
+              </div>
+              <div class="form-row">
+                <label for="store-address">Pickup address</label>
+                <input id="store-address" type="text" class="filter-input" placeholder="123 Market Street, City" />
+              </div>
+            </div>
+          </article>
+
+          <article class="panel-card panel-narrow">
+            <header class="panel-header">
+              <div class="panel-title-group">
+                <h2 class="panel-title">Store status</h2>
+                <p class="panel-subtitle">Toggle storefront visibility</p>
+              </div>
+            </header>
+            <div class="panel-body settings-form">
+              <label class="toggle-row">
+                <span>Storefront online</span>
+                <input type="checkbox" id="toggle-store-online" checked>
+                <span class="toggle-slider"></span>
+              </label>
+              <label class="toggle-row">
+                <span>Maintenance banner</span>
+                <input type="checkbox" id="toggle-maintenance">
+                <span class="toggle-slider"></span>
+              </label>
+              <label class="toggle-row">
+                <span>New order alerts</span>
+                <input type="checkbox" id="toggle-alerts" checked>
+                <span class="toggle-slider"></span>
+              </label>
+              <div class="settings-hint">Alerts show as bell notifications in the admin header.</div>
+            </div>
+          </article>
+        </section>
+
+        <section class="dashboard-row dashboard-row-middle settings-grid">
+          <article class="panel-card panel-wide">
+            <header class="panel-header">
+              <div class="panel-title-group">
+                <h2 class="panel-title">API configuration</h2>
+                <p class="panel-subtitle">Local environment values for your front-end pages</p>
+              </div>
+            </header>
+            <div class="panel-body settings-form">
+              <div class="form-row">
+                <label for="api-base">API Base URL</label>
+                <input id="api-base" type="url" class="filter-input" placeholder="http://localhost:5000/api" />
+              </div>
+              <div class="form-row">
+                <label for="cdn-url">Static assets URL</label>
+                <input id="cdn-url" type="url" class="filter-input" placeholder="http://localhost:5000/static" />
+              </div>
+              <div class="form-row">
+                <label for="support-portal">Support portal link</label>
+                <input id="support-portal" type="url" class="filter-input" placeholder="https://docs.freshmart.local" />
+              </div>
+              <div class="settings-hint">Updating these values also updates the small reference card below.</div>
+            </div>
+          </article>
+
+          <article class="panel-card panel-narrow">
+            <header class="panel-header">
+              <div class="panel-title-group">
+                <h2 class="panel-title">Quick reference</h2>
+                <p class="panel-subtitle">URLs and store identity</p>
+              </div>
+            </header>
+            <div class="panel-body settings-reference">
+              <div class="reference-row">
+                <span>Store</span>
+                <strong id="ref-store-name">FreshMart</strong>
+              </div>
+              <div class="reference-row">
+                <span>Support</span>
+                <strong id="ref-support-email">support@freshmart.com</strong>
+              </div>
+              <div class="reference-row">
+                <span>API</span>
+                <strong id="ref-api-base">http://localhost:5000/api</strong>
+              </div>
+              <div class="reference-row">
+                <span>Assets</span>
+                <strong id="ref-cdn-url">http://localhost:5000/static</strong>
+              </div>
+              <div class="reference-row">
+                <span>Portal</span>
+                <strong id="ref-support-portal">https://docs.freshmart.local</strong>
+              </div>
+            </div>
+          </article>
+        </section>
+
+        <section class="dashboard-row dashboard-row-kpi settings-actions">
+          <article class="panel-card panel-wide">
+            <div class="settings-actions-row">
+              <div>
+                <h3 class="panel-title">Save & Apply</h3>
+                <p class="panel-subtitle">Persist settings locally for this browser.</p>
+              </div>
+              <div class="settings-buttons">
+                <button class="btn-secondary" id="reset-settings">Reset to defaults</button>
+                <button class="btn-primary" id="save-settings">Save changes</button>
+              </div>
+            </div>
+            <div id="settings-toast" class="settings-toast" role="status">Settings saved.</div>
+          </article>
+        </section>
+      </main>
+    </div>
+  </div>
+
+  <script src="settings.js" defer></script>
+</body>
+</html>
