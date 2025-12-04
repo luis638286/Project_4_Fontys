@@ -95,6 +95,7 @@
       }
 
       cartStore.addItem(product, qty)
+      renderCartPanel()
       button.textContent = 'Added!'
       setTimeout(() => {
         button.textContent = 'Add to Cart'
