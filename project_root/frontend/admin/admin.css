@@ -31,10 +31,13 @@ body.admin-auth-body,
 body.admin-dashboard-body {
   font-family: 'Poppins', Arial, sans-serif;
   min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   background:
-    radial-gradient(circle at top left, #22c55e 0, transparent 40%),
-    radial-gradient(circle at bottom right, #22d3ee 0, transparent 45%),
-    linear-gradient(145deg, #020617, #020617 55%, #0b1120);
+    radial-gradient(circle at top left, #57ff71 0, transparent 45%),
+    radial-gradient(circle at bottom right, #faff89 0, transparent 50%),
+    radial-gradient(circle at center, #28cf33 0, #064e3b 55%, #022c22 100%);
   color: var(--fm-text-main);
   padding: 24px;
   overflow: hidden;
@@ -584,10 +587,7 @@ input.shake {
    ================== */
 
 body.admin-dashboard-body {
-  display: flex;
-  align-items: stretch;
-  padding: 16px;
-  overflow: hidden;
+  padding: 24px;
 }
 
 .admin-shell {

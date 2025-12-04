@@ -3,21 +3,17 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>FreshMart Admin – Products</title>
+  <title>FreshMart Admin - Products</title>
 
-  <!-- Fonts -->
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <!-- Poppins, same as login and main site -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
-  <!-- Shared Admin Theme -->
   <link rel="stylesheet" href="admin.css">
-  <link rel="stylesheet" href="products.css">
 </head>
-
 <body class="admin-dashboard-body">
-
-  <!-- Background orbs -->
+  <!-- Background behind full admin layout -->
   <div class="admin-bg-orb orb-1"></div>
   <div class="admin-bg-orb orb-2"></div>
   <div class="admin-bg-orb orb-3"></div>
@@ -38,22 +34,19 @@
           <span class="sidebar-icon">📊</span>
           <span>Dashboard</span>
         </a>
-
         <a href="admin-orders.html" class="sidebar-link">
           <span class="sidebar-icon">📦</span>
           <span>Orders</span>
+          <span class="sidebar-badge badge-pill">12</span>
         </a>
-
         <a href="products.html" class="sidebar-link active">
           <span class="sidebar-icon">🛍️</span>
           <span>Products</span>
         </a>
-
         <a href="#" class="sidebar-link">
           <span class="sidebar-icon">👥</span>
           <span>Customers</span>
         </a>
-
         <a href="#" class="sidebar-link">
           <span class="sidebar-icon">⚙️</span>
           <span>Settings</span>
@@ -62,31 +55,41 @@
 
       <div class="sidebar-footer">
         <div class="sidebar-status">
-          <span class="status-dot"></span> Store online
+          <span class="status-dot"></span>
+          <span class="status-text">Store online</span>
         </div>
-        <button class="sidebar-logout" onclick="window.location.href='admin-login.html'">Log out</button>
+        <button class="sidebar-logout" onclick="window.location.href='admin-login.html'">
+          <span>Log out</span>
+        </button>
       </div>
     </aside>
 
-    <!-- Main -->
+    <!-- Main area -->
     <div class="admin-main">
-
-      <!-- Topbar -->
+      <!-- Top bar -->
       <header class="admin-topbar">
         <div class="topbar-left">
           <div class="topbar-title-group">
             <h1 class="topbar-title">Products</h1>
-            <p class="topbar-subtitle">Manage inventory and add new items</p>
+            <p class="topbar-subtitle">Manage your supermarket catalog</p>
+          </div>
+          <div class="topbar-date-pill">
+            <span class="topbar-date-icon">📦</span>
+            <span id="topbar-date-text">Admin products</span>
           </div>
         </div>
 
         <div class="topbar-right">
           <div class="topbar-search">
             <span class="topbar-search-icon">🔍</span>
-            <input type="search" id="product-search" placeholder="Search products…" />
+            <input
+              type="search"
+              id="product-search-input"
+              placeholder="Search products by name or category"
+            >
           </div>
 
-          <button class="topbar-icon-button">
+          <button class="topbar-icon-button" aria-label="Notifications">
             <span class="topbar-icon">🔔</span>
             <span class="topbar-dot"></span>
           </button>
@@ -96,60 +99,206 @@
               <span class="topbar-user-name">Admin</span>
               <span class="topbar-user-role">Store manager</span>
             </div>
-            <div class="topbar-avatar">FM</div>
+            <div class="topbar-avatar">
+              <span>FM</span>
+            </div>
           </div>
         </div>
       </header>
 
       <!-- Content -->
       <main class="admin-content">
+        <!-- Row: form on left, list on right -->
+        <section class="dashboard-row dashboard-row-middle">
+          <!-- Product form panel -->
+          <article class="panel-card panel-wide">
+            <header class="panel-header">
+              <div class="panel-title-group">
+                <h2 class="panel-title" id="product-form-title">Add product</h2>
+                <p class="panel-subtitle" id="product-form-subtitle">
+                  Create new products or edit existing ones
+                </p>
+              </div>
+              <div class="panel-actions">
+                <button
+                  type="button"
+                  id="product-form-reset-btn"
+                  class="chip-toggle small"
+                >
+                  Clear form
+                </button>
+              </div>
+            </header>
 
-        <!-- Add Product Card -->
-        <div class="product-card">
-          <h2 class="product-card-title">Add a New Product</h2>
+            <div class="panel-body">
+              <form id="product-form">
+                <!-- Hidden ID for edit mode -->
+                <input type="hidden" id="product-id" name="id">
 
-          <form id="productForm" class="product-form">
+                <div class="dashboard-row" style="grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; margin-bottom: 10px;">
+                  <div class="filter-block">
+                    <label class="filter-label" for="product-name">Name</label>
+                    <input
+                      id="product-name"
+                      name="name"
+                      type="text"
+                      class="filter-input"
+                      placeholder="e.g. Organic apples 1kg"
+                      required
+                    >
+                  </div>
 
-            <div class="form-row">
-              <label>Product Name</label>
-              <input type="text" id="name" class="product-input" placeholder="Bananas" required>
+                  <div class="filter-block">
+                    <label class="filter-label" for="product-category">Category</label>
+                    <input
+                      id="product-category"
+                      name="category"
+                      type="text"
+                      class="filter-input"
+                      placeholder="e.g. Fruits"
+                    >
+                  </div>
+
+                  <div class="filter-block">
+                    <label class="filter-label" for="product-price">Price (EUR)</label>
+                    <input
+                      id="product-price"
+                      name="price"
+                      type="number"
+                      step="0.01"
+                      min="0"
+                      class="filter-input"
+                      placeholder="e.g. 2.99"
+                      required
+                    >
+                  </div>
+
+                  <div class="filter-block">
+                    <label class="filter-label" for="product-stock">Stock</label>
+                    <input
+                      id="product-stock"
+                      name="stock"
+                      type="number"
+                      min="0"
+                      class="filter-input"
+                      placeholder="e.g. 120"
+                      required
+                    >
+                  </div>
+
+                  <div class="filter-block">
+                    <label class="filter-label" for="product-discount">Discount (%)</label>
+                    <input
+                      id="product-discount"
+                      name="discount"
+                      type="number"
+                      min="0"
+                      max="100"
+                      step="1"
+                      class="filter-input"
+                      placeholder="0 for no discount"
+                    >
+                  </div>
+
+                  <div class="filter-block">
+                    <label class="filter-label" for="product-image-url">Image URL</label>
+                    <input
+                      id="product-image-url"
+                      name="imageUrl"
+                      type="url"
+                      class="filter-input"
+                      placeholder="https://example.com/photo.jpg"
+                    >
+                  </div>
+                </div>
+
+                <div class="filter-block" style="margin-bottom: 10px;">
+                  <label class="filter-label" for="product-description">Description</label>
+                  <textarea
+                    id="product-description"
+                    name="description"
+                    rows="3"
+                    class="filter-input"
+                    style="border-radius: 16px; resize: vertical; min-height: 60px;"
+                    placeholder="Short description for the product details page"
+                  ></textarea>
+                </div>
+
+                <div
+                  class="filter-block"
+                  style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px;"
+                >
+                  <label class="filter-label" style="margin-bottom: 0;">
+                    <input
+                      id="product-featured"
+                      name="isFeatured"
+                      type="checkbox"
+                      style="width: 14px; height: 14px; margin-right: 6px;"
+                    >
+                    Mark as featured category item
+                  </label>
+                </div>
+
+                <div style="display: flex; gap: 8px;">
+                  <button
+                    type="submit"
+                    id="product-save-btn"
+                    class="chip-toggle chip-active"
+                    style="padding: 8px 16px; font-size: 12px;"
+                  >
+                    Save product
+                  </button>
+                  <button
+                    type="button"
+                    id="product-cancel-edit-btn"
+                    class="chip-toggle danger small"
+                    style="display: none;"
+                  >
+                    Cancel edit
+                  </button>
+                </div>
+              </form>
             </div>
+          </article>
 
-            <div class="form-row">
-              <label>Image URL</label>
-              <input type="url" id="image_url" class="product-input" placeholder="https://image.jpg">
+          <!-- Product list panel -->
+          <article class="panel-card panel-narrow">
+            <header class="panel-header">
+              <div class="panel-title-group">
+                <h2 class="panel-title">Products list</h2>
+                <p class="panel-subtitle">
+                  Edit or remove products directly
+                </p>
+              </div>
+            </header>
+
+            <div class="panel-body">
+              <div class="table-wrapper table-wrapper-scroll">
+                <table class="orders-table" id="products-table">
+                  <thead>
+                    <tr>
+                      <th>ID</th>
+                      <th>Image</th>
+                      <th>Name</th>
+                      <th>Price</th>
+                      <th>Stock</th>
+                      <th>Category</th>
+                      <th>Featured</th>
+                      <th>Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody id="products-table-body">
+                    <!-- Filled by products.js -->
+                  </tbody>
+                </table>
+              </div>
             </div>
-
-            <div class="form-row">
-              <label>Category</label>
-              <select id="category" class="product-input" required>
-                <option value="">Select category</option>
-                <option value="Fruits">Fruits</option>
-                <option value="Vegetables">Vegetables</option>
-                <option value="Dairy">Dairy</option>
-                <option value="Bakery">Bakery</option>
-                <option value="Drinks">Drinks</option>
-                <option value="Snacks">Snacks</option>
-                <option value="Meat">Meat</option>
-              </select>
-            </div>
-
-            <div class="form-row">
-              <label>Price (€)</label>
-              <input type="number" id="price" class="product-input" step="0.01" required>
-            </div>
-
-            <button type="submit" class="product-submit-btn">Add Product</button>
-          </form>
-
-          <p id="product-message" class="product-message"></p>
-        </div>
-
+          </article>
+        </section>
       </main>
-
     </div>
   </div>
 
-  <script src="products.js"></script>
+  <script src="products.js" defer></script>
 </body>
 </html>

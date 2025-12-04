@@ -1,160 +1,172 @@
-import os
-import sqlite3
-from flask import Flask, jsonify, request, session
+from flask import Flask, request, jsonify
 from flask_cors import CORS
-import bcrypt
+import sqlite3
+from pathlib import Path
 
-from . import models   # your existing user system
+DB_PATH = Path('freshmart.db')
+
+app = Flask(__name__)
+CORS(app)
 
 
-def create_app():
-    app = Flask(__name__)
-    CORS(app, supports_credentials=True)
+DB_PATH = Path('freshmart.db')
 
-    # Secret key for sessions
-    app.config["SECRET_KEY"] = "change-this-later"
+app = Flask(__name__)
 
-    # ---- Seed in-memory data once at startup ----
-    models.seed_users()
-    models.seed_products()
-    print("Seeded admin user and sample products")
 
-    # -------------------------
-    # Helpers
-    # -------------------------
-    def require_login(f):
-        def wrapper(*args, **kwargs):
-            if "user_id" not in session:
-                return jsonify({"error": "Login required"}), 401
-            return f(*args, **kwargs)
+def get_db_connection():
+  conn = sqlite3.connect(DB_PATH)
+  conn.row_factory = sqlite3.Row
+  return conn
 
-        wrapper.__name__ = f.__name__
-        return wrapper
 
-    def require_admin(f):
-        @require_login
-        def wrapper(*args, **kwargs):
-            if session.get("role") != "admin":
-                return jsonify({"error": "Admin only"}), 403
-            return f(*args, **kwargs)
+def init_db():
+  conn = get_db_connection()
+  cur = conn.cursor()
+  cur.execute(
+    """
+    CREATE TABLE IF NOT EXISTS products (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      name TEXT NOT NULL,
+      price REAL NOT NULL DEFAULT 0,
+      stock INTEGER NOT NULL DEFAULT 0,
+      category TEXT,
+      description TEXT,
+      image_url TEXT,
+      discount REAL NOT NULL DEFAULT 0,
+      is_featured INTEGER NOT NULL DEFAULT 0
+    )
+    """
+  )
+  conn.commit()
+  conn.close()
 
-        wrapper.__name__ = f.__name__
-        return wrapper
 
-    # =============================================================
-    # ROUTES
-    # =============================================================
+@app.route('/api/products', methods=['GET'])
+def get_products():
+  conn = get_db_connection()
+  cur = conn.cursor()
+  cur.execute("SELECT * FROM products ORDER BY id ASC")
+  rows = cur.fetchall()
+  conn.close()
 
-    @app.route("/api/health", methods=["GET"])
-    def health():
-        return jsonify({"status": "ok"})
+  products = [dict(row) for row in rows]
+  return jsonify(products)
 
-    # ---------- Auth ----------
 
-    @app.route("/api/login", methods=["POST"])
-    def login():
-        data = request.get_json() or {}
-        email = data.get("email")
-        password = data.get("password")
+@app.route('/api/products/<int:product_id>', methods=['GET'])
+def get_product(product_id):
+  conn = get_db_connection()
+  cur = conn.cursor()
+  cur.execute("SELECT * FROM products WHERE id = ?", (product_id,))
+  row = cur.fetchone()
+  conn.close()
 
-        if not email or not password:
-            return jsonify({"error": "Email and password are required"}), 400
+  if row is None:
+    return jsonify({'error': 'Product not found'}), 404
 
-        user = models.get_user_by_email(email)
-        if user is None:
-            return jsonify({"error": "Invalid email or password"}), 401
+  return jsonify(dict(row))
 
-        stored_hash = user["password_hash"].encode("utf-8")
-        if not bcrypt.checkpw(password.encode("utf-8"), stored_hash):
-            return jsonify({"error": "Invalid email or password"}), 401
 
-        session["user_id"] = user["id"]
-        session["role"] = user["role"]
+@app.route('/api/products', methods=['POST'])
+def create_product():
+  data = request.get_json(force=True) or {}
 
-        return jsonify({
-            "message": "Login successful",
-            "role": user["role"]
-        }), 200
+  name = data.get('name', '').strip()
+  if not name:
+    return jsonify({'error': 'Name is required'}), 400
 
-    @app.route("/api/me", methods=["GET"])
-    @require_login
-    def me():
-        return jsonify({
-            "user_id": session["user_id"],
-            "role": session["role"]
-        })
+  price = float(data.get('price', 0) or 0)
+  stock = int(data.get('stock', 0) or 0)
+  category = data.get('category', '').strip() or None
+  description = data.get('description', '').strip() or None
+  image_url = data.get('image_url', '').strip() or None
+  discount = float(data.get('discount', 0) or 0)
+  is_featured = 1 if data.get('is_featured') in (1, True, '1', 'true', 'True') else 0
 
-    @app.route("/api/logout", methods=["POST"])
-    @require_login
-    def logout():
-        session.clear()
-        return jsonify({"message": "Logged out"})
+  conn = get_db_connection()
+  cur = conn.cursor()
+  cur.execute(
+    """
+    INSERT INTO products (name, price, stock, category, description, image_url, discount, is_featured)
+    VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+    """,
+    (name, price, stock, category, description, image_url, discount, is_featured),
+  )
+  conn.commit()
+  new_id = cur.lastrowid
 
-    # ---------- Products ----------
+  cur.execute("SELECT * FROM products WHERE id = ?", (new_id,))
+  row = cur.fetchone()
+  conn.close()
 
-    @app.route("/api/products", methods=["GET"])
-    def list_products():
-        products = models.get_all_products()
-        return jsonify(products)
+  return jsonify(dict(row)), 201
 
-    @app.route("/api/products", methods=["POST"])
-    @require_admin
-    def add_product():
-        data = request.get_json() or {}
-        name = data.get("name")
-        price = data.get("price")
-        stock = data.get("stock", 0)
 
-        if not name or price is None:
-            return jsonify({"error": "name and price are required"}), 400
+@app.route('/api/products/<int:product_id>', methods=['PUT'])
+def update_product(product_id):
+  data = request.get_json(force=True) or {}
 
-        try:
-            price = float(price)
-            stock = int(stock)
-        except ValueError:
-            return jsonify({"error": "price must be number, stock must be integer"}), 400
+  conn = get_db_connection()
+  cur = conn.cursor()
+  cur.execute("SELECT * FROM products WHERE id = ?", (product_id,))
+  row = cur.fetchone()
+  if row is None:
+    conn.close()
+    return jsonify({'error': 'Product not found'}), 404
 
-        product = models.create_product(name, price, stock)
-        return jsonify(product), 201
+  current = dict(row)
 
-    @app.route("/api/products/<int:product_id>", methods=["PUT"])
-    @require_admin
-    def edit_product(product_id):
-        data = request.get_json() or {}
-        name = data.get("name")
-        price = data.get("price")
-        stock = data.get("stock")
+  name = (data.get('name') or current['name']).strip()
+  price = float(data.get('price', current['price']))
+  stock = int(data.get('stock', current['stock']))
+  category = data.get('category', current.get('category'))
+  if category is not None:
+    category = category.strip()
+  description = data.get('description', current.get('description'))
+  if description is not None:
+    description = description.strip()
+  image_url = data.get('image_url', current.get('image_url'))
+  if image_url is not None:
+    image_url = image_url.strip()
+  discount = float(data.get('discount', current['discount']))
+  is_featured = data.get('is_featured', current['is_featured'])
+  is_featured = 1 if is_featured in (1, True, '1', 'true', 'True') else 0
 
-        if not name or price is None or stock is None:
-            return jsonify({"error": "name, price and stock are required"}), 400
+  cur.execute(
+    """
+    UPDATE products
+    SET name = ?, price = ?, stock = ?, category = ?, description = ?, image_url = ?, discount = ?, is_featured = ?
+    WHERE id = ?
+    """,
+    (name, price, stock, category, description, image_url, discount, is_featured, product_id),
+  )
+  conn.commit()
 
-        try:
-            price = float(price)
-            stock = int(stock)
-        except ValueError:
-            return jsonify({"error": "price must be number, stock must be integer"}), 400
+  cur.execute("SELECT * FROM products WHERE id = ?", (product_id,))
+  updated_row = cur.fetchone()
+  conn.close()
 
-        product = models.update_product(product_id, name, price, stock)
-        if not product:
-            return jsonify({"error": "Product not found"}), 404
+  return jsonify(dict(updated_row))
 
-        return jsonify(product)
 
-    @app.route("/api/products/<int:product_id>", methods=["DELETE"])
-    @require_admin
-    def remove_product(product_id):
-        product = models.get_product_by_id(product_id)
-        if not product:
-            return jsonify({"error": "Product not found"}), 404
+@app.route('/api/products/<int:product_id>', methods=['DELETE'])
+def delete_product(product_id):
+  conn = get_db_connection()
+  cur = conn.cursor()
+  cur.execute("SELECT id FROM products WHERE id = ?", (product_id,))
+  row = cur.fetchone()
+  if row is None:
+    conn.close()
+    return jsonify({'error': 'Product not found'}), 404
 
-        models.delete_product(product_id)
-        return jsonify({"message": "Product deleted"})
+  cur.execute("DELETE FROM products WHERE id = ?", (product_id,))
+  conn.commit()
+  conn.close()
 
-    return app
+  return jsonify({'message': 'Product deleted'}), 200
 
-# ==============================
-# Run with: py -m backend.app
-# ==============================
-if __name__ == "__main__":
-    app = create_app()
-    app.run(debug=True)
+
+if __name__ == '__main__':
+  init_db()
+  app.run(debug=True)
