@@ -1,112 +1,6 @@
 let customers = []
 let filtered = []
 let selectedCustomer = null
-const CUSTOMERS = [
-  {
-    id: 'C-1001',
-    name: 'Sarah Lee',
-    email: 'sarah.lee@example.com',
-    phone: '+1 555-201-8842',
-    address: '221B Greenway Rd, Portland',
-    segment: 'Platinum',
-    status: 'active',
-    orders: 18,
-    totalSpend: 1284.75,
-    lastOrder: 'Today, 09:21',
-    note: 'Prefers organic produce and weekly delivery windows.'
-  },
-  {
-    id: 'C-1002',
-    name: 'Daniel Carter',
-    email: 'dan.carter@example.com',
-    phone: '+1 555-442-1172',
-    address: '88 River Ave, Austin',
-    segment: 'Gold',
-    status: 'active',
-    orders: 12,
-    totalSpend: 864.1,
-    lastOrder: 'Today, 08:47',
-    note: 'Usually shops bakery and dairy bundles.'
-  },
-  {
-    id: 'C-1003',
-    name: 'Aisha Malik',
-    email: 'aisha.malik@example.com',
-    phone: '+1 555-662-9011',
-    address: '14 Market St, Seattle',
-    segment: 'Gold',
-    status: 'at_risk',
-    orders: 9,
-    totalSpend: 732.5,
-    lastOrder: '9 days ago',
-    note: 'Send reactivation offer for pantry essentials.'
-  },
-  {
-    id: 'C-1004',
-    name: 'Lucas Romero',
-    email: 'lucas.romero@example.com',
-    phone: '+1 555-998-2211',
-    address: '310 Lakeview Blvd, Denver',
-    segment: 'Silver',
-    status: 'active',
-    orders: 6,
-    totalSpend: 402.35,
-    lastOrder: 'Yesterday',
-    note: 'Loves seasonal vegetables; keep notified about fresh stock.'
-  },
-  {
-    id: 'C-1005',
-    name: 'Emma Wilson',
-    email: 'emma.wilson@example.com',
-    phone: '+1 555-144-3344',
-    address: '74 Sunset Dr, Phoenix',
-    segment: 'Platinum',
-    status: 'active',
-    orders: 24,
-    totalSpend: 1882.6,
-    lastOrder: 'Today, 07:12',
-    note: 'High-value customer; prioritize delivery time windows.'
-  },
-  {
-    id: 'C-1006',
-    name: 'Omar Ali',
-    email: 'omar.ali@example.com',
-    phone: '+1 555-773-4421',
-    address: '12 Oak St, Chicago',
-    segment: 'Silver',
-    status: 'active',
-    orders: 7,
-    totalSpend: 518.8,
-    lastOrder: 'Today, 06:58',
-    note: 'Enjoys snacks and drinks bundles.'
-  },
-  {
-    id: 'C-1007',
-    name: 'Priya Patel',
-    email: 'priya.patel@example.com',
-    phone: '+1 555-882-7761',
-    address: '44 Skyline Rd, San Diego',
-    segment: 'New',
-    status: 'inactive',
-    orders: 1,
-    totalSpend: 46.9,
-    lastOrder: '62 days ago',
-    note: 'Signed up via promo; send win-back coupon.'
-  },
-  {
-    id: 'C-1008',
-    name: 'Grace Chen',
-    email: 'grace.chen@example.com',
-    phone: '+1 555-118-9901',
-    address: '9 Garden Way, New York',
-    segment: 'Gold',
-    status: 'at_risk',
-    orders: 10,
-    totalSpend: 704.25,
-    lastOrder: '33 days ago',
-    note: 'Add to newsletter about new Asian grocery arrivals.'
-  }
-]
 
 const elements = {
   tableBody: document.getElementById('customers-table-body'),
@@ -123,7 +17,6 @@ const elements = {
   kpiAov: document.getElementById('kpi-aov'),
   kpiAovNote: document.getElementById('kpi-aov-note'),
   kpiAtRisk: document.getElementById('kpi-at-risk'),
-  detailCard: document.getElementById('customer-detail-card'),
   detailName: document.getElementById('customer-detail-name'),
   detailEmail: document.getElementById('customer-detail-email'),
   detailPhone: document.getElementById('customer-detail-phone'),
@@ -137,8 +30,7 @@ const elements = {
   viewOrdersButton: document.getElementById('view-orders'),
   exportButton: document.getElementById('export-customers'),
   addButton: document.getElementById('add-customer'),
-  tableWrapper: document.querySelector('.orders-table'),
-  errorBox: document.getElementById('customers-error')
+  errorBox: document.getElementById('customers-error'),
 }
 
 document.addEventListener('DOMContentLoaded', async () => {
@@ -152,43 +44,36 @@ async function loadCustomers() {
     const users = await apiClient.listUsers('customer')
     customers = (users || []).map(enrichCustomer)
     filtered = [...customers]
-    renderKPIs(filtered)
     renderTable(filtered)
+    renderKPIs(filtered)
   } catch (err) {
-    console.error('Failed to load customers', err)
     showError(err.message || 'Unable to load customers right now')
     renderTable([])
+    renderKPIs([])
   }
 }
 
 function enrichCustomer(user) {
   const createdAt = user.created_at ? new Date(user.created_at) : new Date()
-  const daysAgo = Math.floor((Date.now() - createdAt.getTime()) / (1000 * 60 * 60 * 24))
-
-  const segment = daysAgo < 7 ? 'New' : 'Active'
-  const status = 'active'
-
   return {
-    id: `U-${user.id}`,
+    id: user.id,
     name: `${user.first_name} ${user.last_name}`.trim(),
     email: user.email,
-    segment,
-    status,
+    phone: user.phone || 'N/A',
+    address: user.address || '—',
+    segment: 'Active',
+    status: 'active',
     orders: 0,
     totalSpend: 0,
     lastOrder: createdAt.toLocaleDateString(),
     createdAt,
-    note: 'Registered customer from signup form.',
-    phone: user.phone || 'N/A',
-    address: user.address || '—'
+    note: 'Registered customer from the storefront.',
   }
 }
 
 function renderTable(list) {
-  const tbody = elements.tableBody
-  if (!tbody) return
-
-  tbody.innerHTML = ''
+  if (!elements.tableBody) return
+  elements.tableBody.innerHTML = ''
 
   if (!list.length) {
     const tr = document.createElement('tr')
@@ -197,46 +82,12 @@ function renderTable(list) {
     td.textContent = 'No customers yet. Ask shoppers to sign up from the store.'
     td.style.color = '#9ca3af'
     tr.appendChild(td)
-    tbody.appendChild(tr)
+    elements.tableBody.appendChild(tr)
     clearDetail()
     return
   }
 
   list.forEach((customer, index) => {
-    const row = document.createElement('tr')
-    row.classList.add('order-row')
-    row.dataset.customerId = customer.id
-
-  addButton: document.getElementById('add-customer')
-}
-
-let selectedCustomer = null
-
-document.addEventListener('DOMContentLoaded', () => {
-  renderKPIs(CUSTOMERS)
-  renderTable(CUSTOMERS)
-  attachFilters()
-  attachActions()
-})
-
-function renderKPIs(customers) {
-  const total = customers.length
-  const loyalty = customers.filter(c => c.segment === 'Platinum' || c.segment === 'Gold').length
-  const atRisk = customers.filter(c => c.status === 'at_risk').length
-  const avgOrderValue = (customers.reduce((sum, c) => sum + c.totalSpend, 0) / Math.max(customers.reduce((sum, c) => sum + c.orders, 0), 1)).toFixed(2)
-
-  elements.kpiTotal.textContent = total
-  elements.kpiNew.textContent = '+3 today'
-  elements.kpiLoyalty.textContent = `${loyalty}`
-  elements.kpiLoyaltyChange.textContent = `+${Math.max(1, loyalty - 3)}`
-  elements.kpiAov.textContent = `$${avgOrderValue}`
-  elements.kpiAovNote.textContent = 'Across last 30 days'
-  elements.kpiAtRisk.textContent = atRisk
-}
-
-function renderTable(customers) {
-  elements.tableBody.innerHTML = ''
-  customers.forEach((customer, index) => {
     const row = document.createElement('tr')
     row.classList.add('order-row')
     row.dataset.customerId = customer.id
@@ -251,19 +102,18 @@ function renderTable(customers) {
       <td>${customer.email}</td>
       <td><span class="status-pill status-pill-blue-soft">${customer.segment}</span></td>
       <td>${customer.orders}</td>
-      <td>$${customer.totalSpend.toFixed(2)}</td>
+      <td>€${customer.totalSpend.toFixed(2)}</td>
       <td>${buildStatusPill(customer.status)}</td>
       <td>${customer.lastOrder}</td>
     `
 
     row.addEventListener('click', () => {
-      document.querySelectorAll('.orders-table tbody tr').forEach(r => r.classList.remove('order-row-active'))
+      document.querySelectorAll('.orders-table tbody tr').forEach((r) => r.classList.remove('order-row-active'))
       row.classList.add('order-row-active')
       selectedCustomer = customer
       setDetail(customer)
     })
 
-    tbody.appendChild(row)
     elements.tableBody.appendChild(row)
   })
 }
@@ -274,31 +124,29 @@ function buildStatusPill(status) {
       return '<span class="status-pill status-pill-green">Active</span>'
     case 'at_risk':
       return '<span class="status-pill status-pill-yellow">At risk</span>'
-    case 'inactive':
     default:
       return '<span class="status-pill status-pill-gray">Inactive</span>'
   }
 }
 
 function bindFilters() {
-function attachFilters() {
   elements.search?.addEventListener('input', applyFilters)
   elements.segment?.addEventListener('change', applyFilters)
   elements.status?.addEventListener('change', applyFilters)
   elements.minOrders?.addEventListener('input', applyFilters)
 
   elements.reset?.addEventListener('click', () => {
-    elements.search.value = ''
-    elements.segment.value = 'all'
-    elements.status.value = 'all'
-    elements.minOrders.value = 0
-    elements.quickFilters.forEach(btn => btn.classList.toggle('chip-active', btn.dataset.quick === 'all'))
+    if (elements.search) elements.search.value = ''
+    if (elements.segment) elements.segment.value = 'all'
+    if (elements.status) elements.status.value = 'all'
+    if (elements.minOrders) elements.minOrders.value = 0
+    elements.quickFilters.forEach((btn) => btn.classList.toggle('chip-active', btn.dataset.quick === 'all'))
     applyFilters()
   })
 
-  elements.quickFilters.forEach(btn => {
+  elements.quickFilters.forEach((btn) => {
     btn.addEventListener('click', () => {
-      elements.quickFilters.forEach(b => b.classList.remove('chip-active'))
+      elements.quickFilters.forEach((b) => b.classList.remove('chip-active'))
       btn.classList.add('chip-active')
       applyFilters()
     })
@@ -306,35 +154,21 @@ function attachFilters() {
 }
 
 function applyFilters() {
-  const term = elements.search.value.toLowerCase()
-  const segment = elements.segment.value
-  const status = elements.status.value
-  const minOrders = Number(elements.minOrders.value || 0)
-  const quickFilter = Array.from(elements.quickFilters || []).find(btn => btn.classList.contains('chip-active'))?.dataset.quick || 'all'
+  const term = (elements.search?.value || '').toLowerCase()
+  const segment = elements.segment?.value || 'all'
+  const status = elements.status?.value || 'all'
+  const minOrders = Number(elements.minOrders?.value || 0)
+  const quickFilter = Array.from(elements.quickFilters || []).find((btn) => btn.classList.contains('chip-active'))?.dataset.quick || 'all'
 
-  filtered = customers.filter(customer => {
-    const matchesSearch =
-      customer.name.toLowerCase().includes(term) ||
-      customer.email.toLowerCase().includes(term)
-
+  filtered = customers.filter((customer) => {
+    const matchesSearch = customer.name.toLowerCase().includes(term) || customer.email.toLowerCase().includes(term)
     const matchesSegment = segment === 'all' || customer.segment.toLowerCase() === segment
     const matchesStatus = status === 'all' || customer.status === status
     const matchesOrders = customer.orders >= minOrders
-    const matchesQuick =
-      quickFilter === 'all' ||
-      (customer.createdAt && (Date.now() - customer.createdAt.getTime()) / (1000 * 60 * 60 * 24) <= Number(quickFilter))
 
-    return matchesSearch && matchesSegment && matchesStatus && matchesOrders && matchesQuick
-
-  const filtered = CUSTOMERS.filter(customer => {
-    const matchesSearch =
-      customer.name.toLowerCase().includes(term) ||
-      customer.email.toLowerCase().includes(term) ||
-      customer.phone.toLowerCase().includes(term)
-
-    const matchesSegment = segment === 'all' || customer.segment === segment
-    const matchesStatus = status === 'all' || customer.status === status
-    const matchesOrders = customer.orders >= minOrders
+    if (quickFilter === 'new') {
+      return matchesSearch && matchesSegment && matchesStatus && matchesOrders && customer.segment === 'Active'
+    }
 
     return matchesSearch && matchesSegment && matchesStatus && matchesOrders
   })
@@ -345,56 +179,54 @@ function applyFilters() {
 
 function renderKPIs(list) {
   const total = list.length
-  const loyalty = list.filter(c => c.segment === 'Active').length
-  const atRisk = list.filter(c => c.status === 'at_risk').length
+  const loyalty = list.filter((c) => c.segment === 'Active').length
+  const atRisk = list.filter((c) => c.status === 'at_risk').length
   const avgOrderValue = (list.reduce((sum, c) => sum + c.totalSpend, 0) / Math.max(list.length, 1)).toFixed(2)
 
-  elements.kpiTotal.textContent = total
-  elements.kpiNew.textContent = `+${Math.max(0, total)} signups`
-  elements.kpiLoyalty.textContent = `${loyalty}`
-  elements.kpiLoyaltyChange.textContent = `+${loyalty}`
-  elements.kpiAov.textContent = `$${avgOrderValue}`
-  elements.kpiAovNote.textContent = 'Across all customers'
-  elements.kpiAtRisk.textContent = atRisk
+  if (elements.kpiTotal) elements.kpiTotal.textContent = total
+  if (elements.kpiNew) elements.kpiNew.textContent = `+${Math.max(0, total)} signups`
+  if (elements.kpiLoyalty) elements.kpiLoyalty.textContent = `${loyalty}`
+  if (elements.kpiLoyaltyChange) elements.kpiLoyaltyChange.textContent = `+${loyalty}`
+  if (elements.kpiAov) elements.kpiAov.textContent = `€${avgOrderValue}`
+  if (elements.kpiAovNote) elements.kpiAovNote.textContent = 'Across all customers'
+  if (elements.kpiAtRisk) elements.kpiAtRisk.textContent = atRisk
 }
 
 function setDetail(customer) {
-  elements.detailName.textContent = `${customer.name} (${customer.id})`
-  elements.detailEmail.textContent = customer.email
-  elements.detailPhone.textContent = customer.phone || 'N/A'
-  elements.detailAddress.textContent = customer.address || '—'
-function setDetail(customer) {
-  elements.detailName.textContent = `${customer.name} (${customer.id})`
-  elements.detailEmail.textContent = customer.email
-  elements.detailPhone.textContent = customer.phone
-  elements.detailAddress.textContent = customer.address
-  elements.detailSegment.textContent = customer.segment
-  elements.detailSegment.className = `customer-detail-pill segment-${customer.segment.toLowerCase()}`
-  elements.detailOrders.textContent = `${customer.orders} orders`
-  elements.detailSpend.textContent = `$${customer.totalSpend.toFixed(2)}`
-  elements.detailLastOrder.textContent = customer.lastOrder
-  elements.detailNote.textContent = customer.note
+  if (!customer) return clearDetail()
+  if (elements.detailName) elements.detailName.textContent = `${customer.name} (#${customer.id})`
+  if (elements.detailEmail) elements.detailEmail.textContent = customer.email
+  if (elements.detailPhone) elements.detailPhone.textContent = customer.phone || 'N/A'
+  if (elements.detailAddress) elements.detailAddress.textContent = customer.address || '—'
+  if (elements.detailSegment) {
+    elements.detailSegment.textContent = customer.segment
+    elements.detailSegment.className = `customer-detail-pill segment-${customer.segment.toLowerCase()}`
+  }
+  if (elements.detailOrders) elements.detailOrders.textContent = `${customer.orders} orders`
+  if (elements.detailSpend) elements.detailSpend.textContent = `€${customer.totalSpend.toFixed(2)}`
+  if (elements.detailLastOrder) elements.detailLastOrder.textContent = customer.lastOrder
+  if (elements.detailNote) elements.detailNote.textContent = customer.note
 
   if (elements.emailButton) {
-    elements.emailButton.onclick = () => window.location.href = `mailto:${customer.email}`
+    elements.emailButton.onclick = () => (window.location.href = `mailto:${customer.email}`)
   }
 
   if (elements.viewOrdersButton) {
-    elements.viewOrdersButton.onclick = () => window.location.href = 'admin-orders.html'
+    elements.viewOrdersButton.onclick = () => (window.location.href = 'admin-orders.html')
   }
 }
 
 function clearDetail() {
   selectedCustomer = null
-  elements.detailName.textContent = '—'
-  elements.detailEmail.textContent = '—'
-  elements.detailPhone.textContent = '—'
-  elements.detailAddress.textContent = '—'
-  elements.detailSegment.textContent = '—'
-  elements.detailOrders.textContent = '—'
-  elements.detailSpend.textContent = '—'
-  elements.detailLastOrder.textContent = '—'
-  elements.detailNote.textContent = 'Select a customer to see notes.'
+  if (elements.detailName) elements.detailName.textContent = '—'
+  if (elements.detailEmail) elements.detailEmail.textContent = '—'
+  if (elements.detailPhone) elements.detailPhone.textContent = '—'
+  if (elements.detailAddress) elements.detailAddress.textContent = '—'
+  if (elements.detailSegment) elements.detailSegment.textContent = '—'
+  if (elements.detailOrders) elements.detailOrders.textContent = '—'
+  if (elements.detailSpend) elements.detailSpend.textContent = '—'
+  if (elements.detailLastOrder) elements.detailLastOrder.textContent = '—'
+  if (elements.detailNote) elements.detailNote.textContent = 'Select a customer to see notes.'
 }
 
 function bindActions() {
@@ -402,15 +234,11 @@ function bindActions() {
     if (!filtered.length) return
 
     const csvHeader = 'id,name,email,segment,status,orders,total_spend,last_order\n'
-    const csvRows = filtered.map(c => (
-function attachActions() {
-  elements.exportButton?.addEventListener('click', () => {
-    const csvHeader = 'id,name,email,segment,status,orders,total_spend,last_order\n'
-    const csvRows = CUSTOMERS.map(c => (
+    const csvRows = filtered.map((c) =>
       [c.id, c.name, c.email, c.segment, c.status, c.orders, c.totalSpend, c.lastOrder]
-        .map(value => `"${String(value).replace(/"/g, '""')}"`)
+        .map((value) => `"${String(value).replace(/"/g, '""')}"`)
         .join(',')
-    ))
+    )
     const csv = csvHeader + csvRows.join('\n')
 
     const blob = new Blob([csv], { type: 'text/csv' })
@@ -423,26 +251,7 @@ function attachActions() {
   })
 
   elements.addButton?.addEventListener('click', () => {
-    const name = prompt('Enter customer name to quick-add to the list:')
-    if (!name) return
-
-    const quickCustomer = {
-      id: `C-NEW-${Date.now()}`,
-      name,
-      email: 'pending@example.com',
-      phone: 'N/A',
-      address: 'Pending address',
-      segment: 'New',
-      status: 'active',
-      orders: 0,
-      totalSpend: 0,
-      lastOrder: 'Not yet',
-      note: 'Newly added record. Update details later.',
-      createdAt: new Date()
-    }
-
-    customers.unshift(quickCustomer)
-    applyFilters()
+    alert('Customers are managed from the storefront signup. Use the export button to pull the live list.')
   })
 }
 
@@ -450,11 +259,4 @@ function showError(message) {
   if (!elements.errorBox) return
   elements.errorBox.textContent = message
   elements.errorBox.style.display = 'block'
-}
-      note: 'Newly added record. Update details later.'
-    }
-
-    CUSTOMERS.unshift(quickCustomer)
-    applyFilters()
-  })
 }

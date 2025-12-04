@@ -5,6 +5,7 @@ from flask_cors import CORS
 
 from . import db
 from .routes.auth import bp as auth_bp
+from .routes.orders import bp as orders_bp
 from .routes.products import bp as products_bp
 
 
@@ -24,6 +25,7 @@ def create_app(test_config=None):
     db.init_app(app)
 
     app.register_blueprint(auth_bp, url_prefix="/api/auth")
+    app.register_blueprint(orders_bp, url_prefix="/api/orders")
     app.register_blueprint(products_bp, url_prefix="/api/products")
 
     @app.route("/api/health")
