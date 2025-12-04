@@ -116,11 +116,11 @@
               <span class="kpi-icon">💳</span>
             </div>
             <div class="kpi-main">
-              <span class="kpi-value">$4,820.45</span>
+              <span class="kpi-value" id="kpi-total-revenue">--</span>
             </div>
             <div class="kpi-footer">
-              <span class="kpi-trend up">+18.3%</span>
-              <span class="kpi-note">Compared to yesterday</span>
+              <span class="kpi-trend" id="kpi-average-order">--</span>
+              <span class="kpi-note">Average order value</span>
             </div>
           </article>
 
@@ -130,10 +130,10 @@
               <span class="kpi-icon">📦</span>
             </div>
             <div class="kpi-main">
-              <span class="kpi-value">128</span>
+              <span class="kpi-value" id="kpi-total-orders">--</span>
             </div>
             <div class="kpi-footer">
-              <span class="kpi-trend up">+9</span>
+              <span class="kpi-trend up" id="kpi-orders-today">0 today</span>
               <span class="kpi-note">New since midnight</span>
             </div>
           </article>
@@ -144,11 +144,11 @@
               <span class="kpi-icon">👤</span>
             </div>
             <div class="kpi-main">
-              <span class="kpi-value">32</span>
+              <span class="kpi-value" id="kpi-new-customers">--</span>
             </div>
             <div class="kpi-footer">
-              <span class="kpi-trend up">+6</span>
-              <span class="kpi-note">Joined in last 24h</span>
+              <span class="kpi-trend up" id="kpi-new-customers-note">Joined in last 24h</span>
+              <span class="kpi-note">Based on signups</span>
             </div>
           </article>
 
@@ -158,11 +158,11 @@
               <span class="kpi-icon">⚠️</span>
             </div>
             <div class="kpi-main">
-              <span class="kpi-value">7</span>
+              <span class="kpi-value" id="kpi-low-stock">--</span>
             </div>
             <div class="kpi-footer">
-              <span class="kpi-trend warn">Review today</span>
-              <span class="kpi-note">Critical inventory items</span>
+              <span class="kpi-trend warn" id="kpi-low-stock-note">Review inventory</span>
+              <span class="kpi-note">Below safety threshold</span>
             </div>
           </article>
         </section>
@@ -183,51 +183,7 @@
             </header>
 
             <div class="panel-body">
-              <!-- Simple bar chart built with divs -->
-              <div class="chart-bars">
-                <div class="chart-bar">
-                  <div class="chart-bar-fill" style="height: 48%">
-                    <span class="chart-bar-tooltip">$3.1k</span>
-                  </div>
-                  <span class="chart-bar-label">Mon</span>
-                </div>
-                <div class="chart-bar">
-                  <div class="chart-bar-fill" style="height: 65%">
-                    <span class="chart-bar-tooltip">$4.2k</span>
-                  </div>
-                  <span class="chart-bar-label">Tue</span>
-                </div>
-                <div class="chart-bar active">
-                  <div class="chart-bar-fill" style="height: 82%">
-                    <span class="chart-bar-tooltip">$5.1k</span>
-                  </div>
-                  <span class="chart-bar-label">Wed</span>
-                </div>
-                <div class="chart-bar">
-                  <div class="chart-bar-fill" style="height: 54%">
-                    <span class="chart-bar-tooltip">$3.6k</span>
-                  </div>
-                  <span class="chart-bar-label">Thu</span>
-                </div>
-                <div class="chart-bar">
-                  <div class="chart-bar-fill" style="height: 70%">
-                    <span class="chart-bar-tooltip">$4.6k</span>
-                  </div>
-                  <span class="chart-bar-label">Fri</span>
-                </div>
-                <div class="chart-bar">
-                  <div class="chart-bar-fill" style="height: 62%">
-                    <span class="chart-bar-tooltip">$4.0k</span>
-                  </div>
-                  <span class="chart-bar-label">Sat</span>
-                </div>
-                <div class="chart-bar">
-                  <div class="chart-bar-fill" style="height: 40%">
-                    <span class="chart-bar-tooltip">$2.7k</span>
-                  </div>
-                  <span class="chart-bar-label">Sun</span>
-                </div>
-              </div>
+              <div id="chart-bars" class="chart-bars"></div>
             </div>
           </article>
 
@@ -240,36 +196,7 @@
             </header>
 
             <div class="panel-body">
-              <ul class="status-list">
-                <li class="status-item">
-                  <div class="status-item-lead">
-                    <span class="status-dot small status-dot-green"></span>
-                    <span class="status-label">Pending payment</span>
-                  </div>
-                  <div class="status-metric">18</div>
-                </li>
-                <li class="status-item">
-                  <div class="status-item-lead">
-                    <span class="status-dot small status-dot-yellow"></span>
-                    <span class="status-label">Being prepared</span>
-                  </div>
-                  <div class="status-metric">27</div>
-                </li>
-                <li class="status-item">
-                  <div class="status-item-lead">
-                    <span class="status-dot small status-dot-blue"></span>
-                    <span class="status-label">Out for delivery</span>
-                  </div>
-                  <div class="status-metric">14</div>
-                </li>
-                <li class="status-item">
-                  <div class="status-item-lead">
-                    <span class="status-dot small status-dot-gray"></span>
-                    <span class="status-label">Delivered today</span>
-                  </div>
-                  <div class="status-metric">63</div>
-                </li>
-              </ul>
+              <ul class="status-list" id="live-order-stats"></ul>
             </div>
           </article>
         </section>
@@ -306,54 +233,9 @@
                       <th>Placed at</th>
                     </tr>
                   </thead>
-                  <tbody>
+                  <tbody id="recent-orders-body">
                     <tr>
-                      <td>#FM-1048</td>
-                      <td>Sarah Lee</td>
-                      <td>Fresh fruits pack</td>
-                      <td>$38.40</td>
-                      <td><span class="status-pill status-pill-green">Delivered</span></td>
-                      <td>Today, 09:21</td>
-                    </tr>
-                    <tr>
-                      <td>#FM-1047</td>
-                      <td>Daniel Carter</td>
-                      <td>Dairy and bakery</td>
-                      <td>$24.10</td>
-                      <td><span class="status-pill status-pill-blue">On the way</span></td>
-                      <td>Today, 08:47</td>
-                    </tr>
-                    <tr>
-                      <td>#FM-1046</td>
-                      <td>Aisha Malik</td>
-                      <td>Weekly groceries</td>
-                      <td>$86.75</td>
-                      <td><span class="status-pill status-pill-yellow">Preparing</span></td>
-                      <td>Today, 08:05</td>
-                    </tr>
-                    <tr>
-                      <td>#FM-1045</td>
-                      <td>Lucas Romero</td>
-                      <td>Vegetable bundle</td>
-                      <td>$19.60</td>
-                      <td><span class="status-pill status-pill-gray">Pending</span></td>
-                      <td>Today, 07:54</td>
-                    </tr>
-                    <tr>
-                      <td>#FM-1044</td>
-                      <td>Emma Wilson</td>
-                      <td>Organic essentials</td>
-                      <td>$52.30</td>
-                      <td><span class="status-pill status-pill-green">Delivered</span></td>
-                      <td>Today, 07:12</td>
-                    </tr>
-                    <tr>
-                      <td>#FM-1043</td>
-                      <td>Omar Ali</td>
-                      <td>Snacks and drinks</td>
-                      <td>$27.90</td>
-                      <td><span class="status-pill status-pill-blue">On the way</span></td>
-                      <td>Today, 06:58</td>
+                      <td colspan="6" style="text-align: center; color: #9ca3af;">Loading recent orders…</td>
                     </tr>
                   </tbody>
                 </table>
@@ -370,47 +252,8 @@
             </header>
 
             <div class="panel-body">
-              <ul class="category-metric-list">
-                <li class="category-metric-item">
-                  <div class="category-metric-main">
-                    <span class="category-dot category-dot-green"></span>
-                    <span class="category-name">Fresh fruits</span>
-                  </div>
-                  <div class="category-metric-stats">
-                    <span class="category-orders">42 orders</span>
-                    <span class="category-revenue">$820</span>
-                  </div>
-                </li>
-                <li class="category-metric-item">
-                  <div class="category-metric-main">
-                    <span class="category-dot category-dot-yellow"></span>
-                    <span class="category-name">Vegetables</span>
-                  </div>
-                  <div class="category-metric-stats">
-                    <span class="category-orders">36 orders</span>
-                    <span class="category-revenue">$640</span>
-                  </div>
-                </li>
-                <li class="category-metric-item">
-                  <div class="category-metric-main">
-                    <span class="category-dot category-dot-blue"></span>
-                    <span class="category-name">Dairy</span>
-                  </div>
-                  <div class="category-metric-stats">
-                    <span class="category-orders">29 orders</span>
-                    <span class="category-revenue">$510</span>
-                  </div>
-                </li>
-                <li class="category-metric-item">
-                  <div class="category-metric-main">
-                    <span class="category-dot category-dot-pink"></span>
-                    <span class="category-name">Bakery</span>
-                  </div>
-                  <div class="category-metric-stats">
-                    <span class="category-orders">21 orders</span>
-                    <span class="category-revenue">$340</span>
-                  </div>
-                </li>
+              <ul class="category-metric-list" id="popular-categories">
+                <li class="category-metric-item" style="color: #9ca3af;">Loading categories…</li>
               </ul>
             </div>
           </article>
@@ -419,6 +262,9 @@
     </div>
   </div>
 
+  <script src="../assets/js/config.js" defer></script>
+  <script src="../assets/js/api.js" defer></script>
+  <script src="dashboard.js" defer></script>
   <script src="admin.js" defer></script>
 </body>
 </html>

@@ -45,18 +45,19 @@ body::after {
 .signup-container {
   display: flex;
   width: 900px;
-  background: rgba(255, 255, 255, 0.18);
-  backdrop-filter: blur(14px);
-  border-radius: 15px;
+  background: rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(18px);
+  border-radius: 18px;
   overflow: hidden;
-  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.35);
+  box-shadow: 0 14px 38px rgba(15, 61, 46, 0.35);
+  border: 1px solid rgba(255, 255, 255, 0.28);
 }
 
 /* Left Section */
 .signup-left {
   flex: 1;
-  padding: 40px;
-  color: #e1ffa2;
+  padding: 42px;
+  color: #e8ffb8;
 }
 
 .logo {
@@ -68,7 +69,7 @@ body::after {
   font-size: 38px;
   font-weight: bold;
   margin-bottom: 5px;
-  color: #e1ffa2;
+  color: #e8ffb8;
 }
 
 .tagline {
@@ -85,14 +86,14 @@ body::after {
 .features li {
   font-size: 15px;
   margin-bottom: 10px;
-  color: #eaffd1;
+  color: #f3ffe2;
 }
 
 /* Right Section */
 .signup-right {
   flex: 1;
-  padding: 40px;
-  background: rgba(0, 0, 0, 0.2);
+  padding: 42px;
+  background: rgba(0, 0, 0, 0.22);
 }
 
 /* Header */
@@ -129,15 +130,16 @@ label {
 
 .input-wrapper input {
   width: 100%;
-  padding: 10px;
-  border-radius: 8px;
-  border: none;
+  padding: 12px;
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.3);
   font-size: 15px;
-  background: rgba(255, 255, 255, 0.9);
+  background: rgba(255, 255, 255, 0.92);
+  color: #0f3d2e;
 }
 
 .input-wrapper input:focus {
-  border: 2px solid #b6ff6c;
+  border: 2px solid #6be287;
   outline: none;
 }
 
@@ -150,13 +152,15 @@ label {
   border-radius: 30px;
   font-weight: bold;
   font-size: 18px;
-  background: linear-gradient(45deg, #57ff71, #28cf33);
-  color: #003300;
-  transition: transform 0.3s ease;
+  background: linear-gradient(120deg, #2dbf64, #4ddf7d);
+  color: #ffffff;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  box-shadow: 0 14px 28px rgba(45, 191, 100, 0.28);
 }
 
 .signup-button:hover {
-  transform: scale(1.05);
+  transform: translateY(-1px) scale(1.02);
+  box-shadow: 0 18px 32px rgba(45, 191, 100, 0.32);
 }
 
 /* Divider */
