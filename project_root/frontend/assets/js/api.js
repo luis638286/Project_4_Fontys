@@ -1,7 +1,5 @@
 (function (global) {
-  const base =
-    (global.APP_CONFIG && global.APP_CONFIG.apiBaseUrl) ||
-    `${window.location.origin}/api`
+  const base = (global.APP_CONFIG && global.APP_CONFIG.apiBaseUrl) || ''
 
   async function handleResponse(res) {
     const data = await res.json().catch(() => ({}))
