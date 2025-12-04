@@ -6,7 +6,6 @@ from flask_cors import CORS
 from . import db
 from .routes.auth import bp as auth_bp
 from .routes.products import bp as products_bp
-from .routes.orders import bp as orders_bp
 
 
 def create_app(test_config=None):
@@ -24,12 +23,8 @@ def create_app(test_config=None):
 
     db.init_app(app)
 
-    with app.app_context():
-        db.ensure_schema()
-
     app.register_blueprint(auth_bp, url_prefix="/api/auth")
     app.register_blueprint(products_bp, url_prefix="/api/products")
-    app.register_blueprint(orders_bp, url_prefix="/api/orders")
 
     @app.route("/api/health")
     def health_check():

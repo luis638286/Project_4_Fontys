@@ -71,28 +71,14 @@ def list_users():
     role = request.args.get("role")
     db = get_db()
 
-    query = """
-        SELECT
-            u.id,
-            u.first_name,
-            u.last_name,
-            u.email,
-            u.role,
-            u.created_at,
-            COALESCE(COUNT(DISTINCT o.id), 0) as order_count,
-            COALESCE(SUM(o.total), 0) as total_spend,
-            MAX(o.created_at) as last_order_at
-        FROM users u
-        LEFT JOIN orders o ON o.user_id = u.id
-    """
-
+    query = "SELECT id, first_name, last_name, email, role, created_at FROM users"
     params = []
 
     if role:
-        query += " WHERE u.role = ?"
+        query += " WHERE role = ?"
         params.append(role)
 
-    query += " GROUP BY u.id ORDER BY datetime(u.created_at) DESC"
+    query += " ORDER BY datetime(created_at) DESC"
 
     rows = db.execute(query, params).fetchall()
     return jsonify([dict(row) for row in rows])

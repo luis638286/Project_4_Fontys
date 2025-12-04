@@ -1,6 +1,112 @@
 let customers = []
 let filtered = []
 let selectedCustomer = null
+const CUSTOMERS = [
+  {
+    id: 'C-1001',
+    name: 'Sarah Lee',
+    email: 'sarah.lee@example.com',
+    phone: '+1 555-201-8842',
+    address: '221B Greenway Rd, Portland',
+    segment: 'Platinum',
+    status: 'active',
+    orders: 18,
+    totalSpend: 1284.75,
+    lastOrder: 'Today, 09:21',
+    note: 'Prefers organic produce and weekly delivery windows.'
+  },
+  {
+    id: 'C-1002',
+    name: 'Daniel Carter',
+    email: 'dan.carter@example.com',
+    phone: '+1 555-442-1172',
+    address: '88 River Ave, Austin',
+    segment: 'Gold',
+    status: 'active',
+    orders: 12,
+    totalSpend: 864.1,
+    lastOrder: 'Today, 08:47',
+    note: 'Usually shops bakery and dairy bundles.'
+  },
+  {
+    id: 'C-1003',
+    name: 'Aisha Malik',
+    email: 'aisha.malik@example.com',
+    phone: '+1 555-662-9011',
+    address: '14 Market St, Seattle',
+    segment: 'Gold',
+    status: 'at_risk',
+    orders: 9,
+    totalSpend: 732.5,
+    lastOrder: '9 days ago',
+    note: 'Send reactivation offer for pantry essentials.'
+  },
+  {
+    id: 'C-1004',
+    name: 'Lucas Romero',
+    email: 'lucas.romero@example.com',
+    phone: '+1 555-998-2211',
+    address: '310 Lakeview Blvd, Denver',
+    segment: 'Silver',
+    status: 'active',
+    orders: 6,
+    totalSpend: 402.35,
+    lastOrder: 'Yesterday',
+    note: 'Loves seasonal vegetables; keep notified about fresh stock.'
+  },
+  {
+    id: 'C-1005',
+    name: 'Emma Wilson',
+    email: 'emma.wilson@example.com',
+    phone: '+1 555-144-3344',
+    address: '74 Sunset Dr, Phoenix',
+    segment: 'Platinum',
+    status: 'active',
+    orders: 24,
+    totalSpend: 1882.6,
+    lastOrder: 'Today, 07:12',
+    note: 'High-value customer; prioritize delivery time windows.'
+  },
+  {
+    id: 'C-1006',
+    name: 'Omar Ali',
+    email: 'omar.ali@example.com',
+    phone: '+1 555-773-4421',
+    address: '12 Oak St, Chicago',
+    segment: 'Silver',
+    status: 'active',
+    orders: 7,
+    totalSpend: 518.8,
+    lastOrder: 'Today, 06:58',
+    note: 'Enjoys snacks and drinks bundles.'
+  },
+  {
+    id: 'C-1007',
+    name: 'Priya Patel',
+    email: 'priya.patel@example.com',
+    phone: '+1 555-882-7761',
+    address: '44 Skyline Rd, San Diego',
+    segment: 'New',
+    status: 'inactive',
+    orders: 1,
+    totalSpend: 46.9,
+    lastOrder: '62 days ago',
+    note: 'Signed up via promo; send win-back coupon.'
+  },
+  {
+    id: 'C-1008',
+    name: 'Grace Chen',
+    email: 'grace.chen@example.com',
+    phone: '+1 555-118-9901',
+    address: '9 Garden Way, New York',
+    segment: 'Gold',
+    status: 'at_risk',
+    orders: 10,
+    totalSpend: 704.25,
+    lastOrder: '33 days ago',
+    note: 'Add to newsletter about new Asian grocery arrivals.'
+  }
+]
 
 const elements = {
   tableBody: document.getElementById('customers-table-body'),
@@ -17,6 +123,7 @@ const elements = {
   kpiAov: document.getElementById('kpi-aov'),
   kpiAovNote: document.getElementById('kpi-aov-note'),
   kpiAtRisk: document.getElementById('kpi-at-risk'),
+  detailCard: document.getElementById('customer-detail-card'),
   detailName: document.getElementById('customer-detail-name'),
   detailEmail: document.getElementById('customer-detail-email'),
   detailPhone: document.getElementById('customer-detail-phone'),
@@ -56,13 +163,10 @@ async function loadCustomers() {
 
 function enrichCustomer(user) {
   const createdAt = user.created_at ? new Date(user.created_at) : new Date()
-  const lastOrderAt = user.last_order_at ? new Date(user.last_order_at) : null
-  const orders = Number(user.order_count || 0)
-  const totalSpend = Number(user.total_spend || 0)
-
   const daysAgo = Math.floor((Date.now() - createdAt.getTime()) / (1000 * 60 * 60 * 24))
-  const segment = orders > 0 ? 'Active' : daysAgo < 7 ? 'New' : 'Inactive'
-  const status = orders > 0 ? 'active' : 'inactive'
+
+  const segment = daysAgo < 7 ? 'New' : 'Active'
+  const status = 'active'
 
   return {
     id: `U-${user.id}`,
@@ -70,13 +174,11 @@ function enrichCustomer(user) {
     email: user.email,
     segment,
     status,
-    orders,
-    totalSpend,
-    lastOrder: lastOrderAt ? lastOrderAt.toLocaleDateString() : 'No orders yet',
+    orders: 0,
+    totalSpend: 0,
+    lastOrder: createdAt.toLocaleDateString(),
     createdAt,
-    note: orders
-      ? 'Recently placed an order.'
-      : 'Registered customer from signup form.',
+    note: 'Registered customer from signup form.',
     phone: user.phone || 'N/A',
     address: user.address || '—'
   }
@@ -105,6 +207,39 @@ function renderTable(list) {
     row.classList.add('order-row')
     row.dataset.customerId = customer.id
 
+  addButton: document.getElementById('add-customer')
+}
+
+let selectedCustomer = null
+
+document.addEventListener('DOMContentLoaded', () => {
+  renderKPIs(CUSTOMERS)
+  renderTable(CUSTOMERS)
+  attachFilters()
+  attachActions()
+})
+
+function renderKPIs(customers) {
+  const total = customers.length
+  const loyalty = customers.filter(c => c.segment === 'Platinum' || c.segment === 'Gold').length
+  const atRisk = customers.filter(c => c.status === 'at_risk').length
+  const avgOrderValue = (customers.reduce((sum, c) => sum + c.totalSpend, 0) / Math.max(customers.reduce((sum, c) => sum + c.orders, 0), 1)).toFixed(2)
+
+  elements.kpiTotal.textContent = total
+  elements.kpiNew.textContent = '+3 today'
+  elements.kpiLoyalty.textContent = `${loyalty}`
+  elements.kpiLoyaltyChange.textContent = `+${Math.max(1, loyalty - 3)}`
+  elements.kpiAov.textContent = `$${avgOrderValue}`
+  elements.kpiAovNote.textContent = 'Across last 30 days'
+  elements.kpiAtRisk.textContent = atRisk
+}
+
+function renderTable(customers) {
+  elements.tableBody.innerHTML = ''
+  customers.forEach((customer, index) => {
+    const row = document.createElement('tr')
+    row.classList.add('order-row')
+    row.dataset.customerId = customer.id
     if (index === 0) {
       row.classList.add('order-row-active')
       selectedCustomer = customer
@@ -129,6 +264,7 @@ function renderTable(list) {
     })
 
     tbody.appendChild(row)
+    elements.tableBody.appendChild(row)
   })
 }
 
@@ -145,6 +281,7 @@ function buildStatusPill(status) {
 }
 
 function bindFilters() {
+function attachFilters() {
   elements.search?.addEventListener('input', applyFilters)
   elements.segment?.addEventListener('change', applyFilters)
   elements.status?.addEventListener('change', applyFilters)
@@ -188,6 +325,18 @@ function applyFilters() {
       (customer.createdAt && (Date.now() - customer.createdAt.getTime()) / (1000 * 60 * 60 * 24) <= Number(quickFilter))
 
     return matchesSearch && matchesSegment && matchesStatus && matchesOrders && matchesQuick
+
+  const filtered = CUSTOMERS.filter(customer => {
+    const matchesSearch =
+      customer.name.toLowerCase().includes(term) ||
+      customer.email.toLowerCase().includes(term) ||
+      customer.phone.toLowerCase().includes(term)
+
+    const matchesSegment = segment === 'all' || customer.segment === segment
+    const matchesStatus = status === 'all' || customer.status === status
+    const matchesOrders = customer.orders >= minOrders
+
+    return matchesSearch && matchesSegment && matchesStatus && matchesOrders
   })
 
   renderTable(filtered)
@@ -214,6 +363,11 @@ function setDetail(customer) {
   elements.detailEmail.textContent = customer.email
   elements.detailPhone.textContent = customer.phone || 'N/A'
   elements.detailAddress.textContent = customer.address || '—'
+function setDetail(customer) {
+  elements.detailName.textContent = `${customer.name} (${customer.id})`
+  elements.detailEmail.textContent = customer.email
+  elements.detailPhone.textContent = customer.phone
+  elements.detailAddress.textContent = customer.address
   elements.detailSegment.textContent = customer.segment
   elements.detailSegment.className = `customer-detail-pill segment-${customer.segment.toLowerCase()}`
   elements.detailOrders.textContent = `${customer.orders} orders`
@@ -249,6 +403,10 @@ function bindActions() {
 
     const csvHeader = 'id,name,email,segment,status,orders,total_spend,last_order\n'
     const csvRows = filtered.map(c => (
+function attachActions() {
+  elements.exportButton?.addEventListener('click', () => {
+    const csvHeader = 'id,name,email,segment,status,orders,total_spend,last_order\n'
+    const csvRows = CUSTOMERS.map(c => (
       [c.id, c.name, c.email, c.segment, c.status, c.orders, c.totalSpend, c.lastOrder]
         .map(value => `"${String(value).replace(/"/g, '""')}"`)
         .join(',')
@@ -292,4 +450,11 @@ function showError(message) {
   if (!elements.errorBox) return
   elements.errorBox.textContent = message
   elements.errorBox.style.display = 'block'
+}
+      note: 'Newly added record. Update details later.'
+    }
+
+    CUSTOMERS.unshift(quickCustomer)
+    applyFilters()
+  })
 }
