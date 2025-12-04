@@ -38,6 +38,7 @@
         <div class="search-row">
           <input
             type="search"
+            id="product-search"
             placeholder="Search for products..."
             aria-label="Search products"
           />
@@ -55,11 +56,8 @@
       <section class="products-section">
         <h2 class="section-title">Fresh Products</h2>
 
-        <!-- This grid is EMPTY by default.
-             Your teammates will inject one <article class="product-card"> per product. -->
         <div id="product-grid" class="product-grid"></div>
 
-        <!-- Empty state text shown until products exist -->
         <p id="empty-state" class="empty-state">
           No products available yet. Once products are added to the database,
           they will appear here in the same card style.
@@ -67,29 +65,6 @@
 
         <p id="shop-error" class="empty-state" style="color: #ef4444;"></p>
 
-        <!--
-        ===== STRUCTURE EXAMPLE FOR BACKEND/JS TEAM (NOT RENDERED) =====
-
-        <article class="product-card">
-          <div class="product-image-wrap">
-            <img src="IMAGE_URL" alt="Product name" />
-          </div>
-          <div class="product-body">
-            <h3 class="product-name">Red Apples</h3>
-            <p class="product-meta">Fruits · 1 kg</p>
-            <p class="product-price">€2.99 <span>/ kg</span></p>
-            <div class="product-footer">
-              <input type="number" min="1" value="1" class="qty-input" />
-              <button class="add-btn">Add to Cart</button>
-            </div>
-          </div>
-        </article>
-
-        When you add at least one product:
-          - update #product-count in the cart if you want
-          - hide the empty text: document.getElementById("empty-state").style.display = "none";
-        =================================================================
-        -->
       </section>
     </section>
 
@@ -160,6 +135,7 @@
 
   <script src="../assets/js/config.js" defer></script>
   <script src="../assets/js/api.js" defer></script>
+  <script src="../assets/js/cart.js" defer></script>
   <script src="js/shop.js" defer></script>
 
 </body>
