@@ -28,6 +28,30 @@ CREATE TABLE IF NOT EXISTS products (
     discount REAL NOT NULL DEFAULT 0,
     is_featured INTEGER NOT NULL DEFAULT 0
 );
+
+CREATE TABLE IF NOT EXISTS orders (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    user_id INTEGER,
+    full_name TEXT NOT NULL,
+    email TEXT NOT NULL,
+    address TEXT,
+    city TEXT,
+    notes TEXT,
+    subtotal REAL NOT NULL DEFAULT 0,
+    total REAL NOT NULL DEFAULT 0,
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE SET NULL
+);
+
+CREATE TABLE IF NOT EXISTS order_items (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    order_id INTEGER NOT NULL,
+    product_id INTEGER NOT NULL,
+    quantity INTEGER NOT NULL DEFAULT 1,
+    price REAL NOT NULL DEFAULT 0,
+    FOREIGN KEY (order_id) REFERENCES orders(id) ON DELETE CASCADE,
+    FOREIGN KEY (product_id) REFERENCES products(id) ON DELETE CASCADE
+);
 """
 
 
@@ -65,6 +89,7 @@ def get_db():
         db_path.parent.mkdir(parents=True, exist_ok=True)
         conn = sqlite3.connect(db_path)
         conn.row_factory = sqlite3.Row
+        conn.execute("PRAGMA foreign_keys = ON")
         g.db = conn
     return g.db
 
@@ -139,9 +164,6 @@ def seed_demo_customers(db):
         )
 
     db.commit()
-
-
-    seed_products(db)
 
 
 def seed_products(db):
