@@ -44,6 +44,7 @@ A cleaned-up, sqlite-backed FreshMart demo with a structured Flask API and stati
 - Auth:
   - `POST /api/auth/register` – `first_name`, `last_name`, `email`, `password` (optional `role`)
   - `POST /api/auth/login` – `email`, `password`
+  - `GET /api/auth/users` – list registered users (filter by `?role=customer` or `?role=admin`)
 - Products:
   - `GET /api/products/` – list products
   - `GET /api/products/<id>` – single product
@@ -54,6 +55,11 @@ A cleaned-up, sqlite-backed FreshMart demo with a structured Flask API and stati
 ## Frontend usage
 - Admin dashboard: open `frontend/admin/admin-dashboard.html` for a quick overview and navigation to all admin tools.
 - Admin catalog: open `frontend/admin/products.html` to manage products via the shared API client and Flask endpoints above.
+- Admin customers: open `frontend/admin/customers.html` to browse, filter, and export customer profiles sourced from real sign-ups.
+- Admin settings: open `frontend/admin/settings.html` to toggle store visibility and update local environment pointers.
+- Storefront: open `frontend/customer/shop.html` to browse products backed by the same API.
+- Customer auth: `frontend/customer/signup.html` registers shoppers against the API, and `frontend/customer/login.html` signs them in and redirects to the shop.
+- Admin auth: log in at `frontend/admin/admin-login.html` with the seeded admin user `admin@freshmart.com` / `Admin123!` (created during `init-db`).
 - Admin customers: open `frontend/admin/customers.html` to browse, filter, and export customer profiles.
 - Admin settings: open `frontend/admin/settings.html` to toggle store visibility and update local environment pointers.
 - Storefront: open `frontend/customer/shop.html` to browse products backed by the same API.

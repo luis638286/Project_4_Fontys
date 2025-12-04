@@ -61,6 +61,15 @@
     return handleResponse(res)
   }
 
+  async function listUsers(role) {
+    const url = new URL(`${base}/auth/users`)
+    if (role) {
+      url.searchParams.set('role', role)
+    }
+    const res = await fetch(url)
+    return handleResponse(res)
+  }
+
   global.apiClient = {
     listProducts,
     getProduct,
@@ -69,5 +78,6 @@
     deleteProduct,
     register,
     login,
+    listUsers,
   }
 })(window)

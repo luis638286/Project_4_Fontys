@@ -1,6 +1,8 @@
 import sqlite3
 from pathlib import Path
 
+import bcrypt
+
 import click
 from flask import current_app, g
 
@@ -77,6 +79,67 @@ def init_db():
     db = get_db()
     db.executescript(SCHEMA)
     db.commit()
+
+    seed_admin(db)
+    seed_demo_customers(db)
+    seed_products(db)
+
+
+def seed_admin(db):
+    existing_admin = db.execute(
+        "SELECT id FROM users WHERE email = ?",
+        ("admin@freshmart.com",),
+    ).fetchone()
+
+    if existing_admin:
+        return
+
+    password_hash = bcrypt.hashpw("Admin123!".encode("utf-8"), bcrypt.gensalt()).decode(
+        "utf-8"
+    )
+
+    db.execute(
+        """
+        INSERT INTO users (first_name, last_name, email, password_hash, role)
+        VALUES (?, ?, ?, ?, ?)
+        """,
+        ("FreshMart", "Admin", "admin@freshmart.com", password_hash, "admin"),
+    )
+    db.commit()
+
+
+def seed_demo_customers(db):
+    existing_customers = db.execute("SELECT COUNT(*) as count FROM users WHERE role = 'customer'").fetchone()
+    if existing_customers and existing_customers["count"]:
+        return
+
+    starter_users = [
+        {
+            "first_name": "Sarah",
+            "last_name": "Lee",
+            "email": "sarah.lee@example.com",
+            "password": "Customer123!",
+        },
+        {
+            "first_name": "Daniel",
+            "last_name": "Carter",
+            "email": "dan.carter@example.com",
+            "password": "Customer123!",
+        },
+    ]
+
+    for user in starter_users:
+        password_hash = bcrypt.hashpw(user["password"].encode("utf-8"), bcrypt.gensalt()).decode("utf-8")
+        db.execute(
+            """
+            INSERT INTO users (first_name, last_name, email, password_hash, role)
+            VALUES (?, ?, ?, ?, 'customer')
+            """,
+            (user["first_name"], user["last_name"], user["email"], password_hash),
+        )
+
+    db.commit()
+
 
     seed_products(db)
 

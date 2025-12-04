@@ -64,3 +64,21 @@ def login():
 
     sanitized = {k: user[k] for k in ["id", "first_name", "last_name", "email", "role"]}
     return jsonify({"message": "Login successful", "user": sanitized}), 200
+
+
+@bp.route("/users", methods=["GET"])
+def list_users():
+    role = request.args.get("role")
+    db = get_db()
+
+    query = "SELECT id, first_name, last_name, email, role, created_at FROM users"
+    params = []
+
+    if role:
+        query += " WHERE role = ?"
+        params.append(role)
+
+    query += " ORDER BY datetime(created_at) DESC"
+
+    rows = db.execute(query, params).fetchall()
+    return jsonify([dict(row) for row in rows])

@@ -156,6 +156,8 @@
           </article>
         </section>
 
+        <p id="customers-error" class="empty-state" style="display: none; color: #ef4444; margin-top: 8px;"></p>
+
         <section class="orders-filters-row">
           <div class="filters-group">
             <div class="filter-block">
@@ -163,6 +165,7 @@
               <div class="filter-select-wrapper">
                 <select id="customer-segment" class="filter-select">
                   <option value="all">All segments</option>
+                  <option value="Active">Active</option>
                   <option value="Platinum">Platinum</option>
                   <option value="Gold">Gold</option>
                   <option value="Silver">Silver</option>
@@ -279,6 +282,8 @@
     </div>
   </div>
 
+  <script src="../assets/js/config.js" defer></script>
+  <script src="../assets/js/api.js" defer></script>
   <script src="customers.js" defer></script>
 </body>
 </html>
