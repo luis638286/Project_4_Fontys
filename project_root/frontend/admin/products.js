@@ -1,8 +1,6 @@
 // products.js
 // Frontend logic for FreshMart admin products page
 
-const API_BASE_URL = 'http://127.0.0.1:5000/api/products'
-
 let products = []
 let currentEditId = null
 
@@ -45,12 +43,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 async function loadProducts() {
   try {
-    const res = await fetch(API_BASE_URL)
-    if (!res.ok) {
-      console.error('Failed to load products', res.status)
-      return
-    }
-    const data = await res.json()
+    const data = await apiClient.listProducts()
     products = Array.isArray(data) ? data : []
     renderProductsTable(products)
   } catch (err) {
@@ -249,13 +242,7 @@ async function handleDeleteClick(productId) {
   if (!confirmDelete) return
 
   try {
-    const res = await fetch(`${API_BASE_URL}/${productId}`, {
-      method: 'DELETE'
-    })
-    if (!res.ok) {
-      alert('Failed to delete product')
-      return
-    }
+    await apiClient.deleteProduct(productId)
 
     products = products.filter(p => p.id !== productId)
     renderProductsTable(products)
@@ -300,43 +287,29 @@ async function handleFormSubmit(event) {
     return
   }
 
-  let url = API_BASE_URL
-  let method = 'POST'
-
   if (idValue) {
-    url = `${API_BASE_URL}/${idValue}`
-    method = 'PUT'
-  }
-
-  try {
-    const res = await fetch(url, {
-      method,
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(payload)
-    })
-
-    if (!res.ok) {
-      alert('Failed to save product')
-      return
-    }
-
-    const savedProduct = await res.json()
-
-    if (idValue) {
+    try {
+      const savedProduct = await apiClient.updateProduct(idValue, payload)
       const index = products.findIndex(p => p.id === idValue)
       if (index !== -1) {
         products[index] = savedProduct
       }
-    } else {
-      products.push(savedProduct)
+      renderProductsTable(products)
+      resetForm()
+    } catch (err) {
+      console.error('Error updating product', err)
+      alert(err.message || 'Failed to update product')
     }
-
-    renderProductsTable(products)
-    resetForm()
-  } catch (err) {
-    console.error('Error saving product', err)
-    alert('Error saving product')
+  }
+  else {
+    try {
+      const savedProduct = await apiClient.createProduct(payload)
+      products.push(savedProduct)
+      renderProductsTable(products)
+      resetForm()
+    } catch (err) {
+      console.error('Error saving product', err)
+      alert(err.message || 'Error saving product')
+    }
   }
 }
