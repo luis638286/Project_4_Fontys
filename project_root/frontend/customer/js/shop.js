@@ -1,12 +1,23 @@
 (function () {
   let products = []
+  const cartUI = {}
 
   document.addEventListener('DOMContentLoaded', () => {
+    cacheCartElements()
     setupFilters()
     setupSearch()
     setupCartButtons()
     loadProducts()
+    renderCartPanel()
+    window.addEventListener('storage', renderCartPanel)
   })
+
+  function cacheCartElements() {
+    cartUI.list = document.querySelector('.cart-items')
+    cartUI.empty = document.querySelector('.cart-empty')
+    cartUI.subtotal = document.querySelector('.cart-value')
+    cartUI.checkout = document.querySelector('.checkout-btn')
+  }
 
   function setupFilters() {
     const chips = document.querySelectorAll('.filter-chip')
@@ -119,5 +130,46 @@
       }
       renderProducts([])
     }
+  }
+
+  function renderCartPanel() {
+    if (!cartUI.list || !cartUI.empty || !cartUI.subtotal || !cartUI.checkout) return
+
+    const items = cartStore.loadCart()
+    const totals = cartStore.totals(items)
+
+    cartUI.list.innerHTML = ''
+
+    if (!items.length) {
+      cartUI.empty.style.display = 'block'
+      cartUI.subtotal.textContent = '€0.00'
+      cartUI.checkout.disabled = true
+      cartUI.checkout.classList.add('disabled')
+      cartUI.checkout.onclick = null
+      return
+    }
+
+    cartUI.empty.style.display = 'none'
+    cartUI.checkout.disabled = false
+    cartUI.checkout.classList.remove('disabled')
+    cartUI.checkout.onclick = () => (window.location.href = 'checkout.html')
+
+    items.forEach((item) => {
+      const row = document.createElement('div')
+      row.className = 'cart-item'
+      row.innerHTML = `
+        <div>
+          <p class="cart-item-name">${item.name}</p>
+          <p class="cart-item-meta">${item.category || 'General'} · €${item.price.toFixed(2)}</p>
+        </div>
+        <div class="cart-item-right">
+          <span class="cart-item-qty">x${item.quantity}</span>
+          <span class="cart-item-total">€${(item.price * item.quantity).toFixed(2)}</span>
+        </div>
+      `
+      cartUI.list.appendChild(row)
+    })
+
+    cartUI.subtotal.textContent = `€${totals.subtotal.toFixed(2)}`
   }
 })()
