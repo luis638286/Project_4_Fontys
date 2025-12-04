@@ -1,7 +1,4 @@
-// FreshMart Admin Login Logic
-// Mock credentials
-const ADMIN_EMAIL = 'admin@freshmart.com'
-const ADMIN_PASSWORD = 'Admin123!'
+// FreshMart Admin Login Logic backed by API authentication
 const STORAGE_KEY = 'freshmart_admin_auth'
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -17,7 +14,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   if (!form) return
 
-  form.addEventListener('submit', event => {
+  form.addEventListener('submit', async event => {
     event.preventDefault()
     hideError(errorBox)
 
@@ -30,27 +27,29 @@ document.addEventListener('DOMContentLoaded', () => {
       return
     }
 
-    const isValid =
-      email.toLowerCase() === ADMIN_EMAIL.toLowerCase() &&
-      password === ADMIN_PASSWORD
+    try {
+      const result = await apiClient.login({ email, password })
 
-    if (!isValid) {
-      showError(errorBox, 'Invalid email or password')
+      if (!result?.user || result.user.role !== 'admin') {
+        showError(errorBox, 'You need an admin account to sign in here')
+        return
+      }
+
+      if (rememberCheckbox && rememberCheckbox.checked) {
+        rememberAdmin(result.user)
+      } else {
+        clearRememberedAdmin()
+      }
+
+      form.classList.add('auth-form-success')
+
+      setTimeout(() => {
+        window.location.href = 'admin-dashboard.html'
+      }, 350)
+    } catch (err) {
+      showError(errorBox, err.message || 'Invalid email or password')
       animateInvalidInputs([emailInput, passwordInput])
-      return
     }
-
-    if (rememberCheckbox && rememberCheckbox.checked) {
-      rememberAdmin(email)
-    } else {
-      clearRememberedAdmin()
-    }
-
-    form.classList.add('auth-form-success')
-
-    setTimeout(() => {
-      window.location.href = 'admin-dashboard.html'
-    }, 350)
   })
 })
 
@@ -75,12 +74,9 @@ function animateInvalidInputs(inputs) {
   })
 }
 
-function rememberAdmin(email) {
+function rememberAdmin(user) {
   try {
-    const data = {
-      email,
-      rememberedAt: Date.now()
-    }
+    const data = { ...user, rememberedAt: Date.now() }
     localStorage.setItem(STORAGE_KEY, JSON.stringify(data))
   } catch (err) {
     console.error('Failed to store admin auth', err)

@@ -140,3 +140,9 @@ label {
 .signup-link a:hover {
   text-decoration: underline;
 }
+
+.form-error {
+  color: #f87171;
+  min-height: 20px;
+  margin: 6px 0 12px;
+}
