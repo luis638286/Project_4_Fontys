@@ -277,11 +277,17 @@ body {
   padding: 10px 0;
   font-size: 15px;
   font-weight: 600;
-  cursor: not-allowed; /* logic will be added later */
+  cursor: pointer;
   background: linear-gradient(45deg, #ffeb3b, #ffc107);
   color: #3a3000;
-  opacity: 0.75;
+  opacity: 0.95;
   box-shadow: 0 12px 24px rgba(0, 0, 0, 0.18);
+}
+
+.checkout-btn.disabled,
+.checkout-btn:disabled {
+  opacity: 0.65;
+  cursor: not-allowed;
 }
 
 .secondary-btn {
