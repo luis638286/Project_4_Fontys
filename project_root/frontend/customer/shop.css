@@ -345,10 +345,16 @@ body {
   padding: 10px 0;
   font-size: 15px;
   font-weight: 600;
-  cursor: not-allowed; /* real logic later */
+  cursor: pointer;
   background: linear-gradient(45deg, #ffeb3b, #ffc107);
   color: #3a3000;
-  opacity: 0.75;
+  opacity: 0.95;
+}
+
+.checkout-btn.disabled,
+.checkout-btn:disabled {
+  opacity: 0.65;
+  cursor: not-allowed;
 }
 
 /* ==========================
