@@ -14,11 +14,7 @@ def create_app():
     # Secret key for sessions
     app.config["SECRET_KEY"] = "change-this-later"
 
-<<<<<<< HEAD
     # ---- Seed in-memory data once at startup ----
-=======
-    # Seed in-memory demo users
->>>>>>> 15ce9bf670db42a39139cbf8a665d2ec3283e9f1
     models.seed_users()
     models.seed_products()
     print("Seeded admin user and sample products")
@@ -53,14 +49,8 @@ def create_app():
     def health():
         return jsonify({"status": "ok"})
 
-<<<<<<< HEAD
     # ---------- Auth ----------
 
-=======
-    # -------------------------
-    # AUTH
-    # -------------------------
->>>>>>> 15ce9bf670db42a39139cbf8a665d2ec3283e9f1
     @app.route("/api/login", methods=["POST"])
     def login():
         data = request.get_json() or {}
@@ -100,7 +90,6 @@ def create_app():
         session.clear()
         return jsonify({"message": "Logged out"})
 
-<<<<<<< HEAD
     # ---------- Products ----------
 
     @app.route("/api/products", methods=["GET"])
@@ -161,35 +150,7 @@ def create_app():
         models.delete_product(product_id)
         return jsonify({"message": "Product deleted"})
 
-=======
-
-
-    # =============================================================
-    # PRODUCTS API (SQLite)
-    # =============================================================
-
-    @app.get("/api/products")
-    def get_products():
-        """Return all products from backend/products.db"""
-
-        # --- absolute path to backend/products.db ---
-        BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-        DB_PATH = os.path.join(BASE_DIR, "products.db")
-
-        conn = sqlite3.connect(DB_PATH)
-        conn.row_factory = sqlite3.Row
-        cur = conn.cursor()
-
-        rows = cur.execute("SELECT * FROM products").fetchall()
-        products = [dict(row) for row in rows]
-
-        conn.close()
-        return jsonify(products)
-
-    # END create_app()
->>>>>>> 15ce9bf670db42a39139cbf8a665d2ec3283e9f1
     return app
-
 
 # ==============================
 # Run with: py -m backend.app
