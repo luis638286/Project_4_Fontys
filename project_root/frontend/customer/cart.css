@@ -419,10 +419,28 @@ body {
   box-shadow: 0 10px 20px rgba(15, 61, 46, 0.12);
 }
 
-.summary-note {
-  margin-top: 10px;
-  font-size: 12px;
+.summary-reassurance {
+  margin-top: 14px;
+  padding: 12px 14px;
+  background: rgba(45, 191, 100, 0.06);
+  border: 1px solid rgba(15, 61, 46, 0.08);
+  border-radius: 14px;
+}
+
+.summary-label {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--forest);
+  margin-bottom: 6px;
+}
+
+.summary-reassurance ul {
+  padding-left: 18px;
   color: var(--muted);
+  line-height: 1.4;
+  font-size: 13px;
+  display: grid;
+  gap: 4px;
 }
 
 /* ==========================

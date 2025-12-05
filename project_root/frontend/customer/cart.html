@@ -24,7 +24,6 @@
         <li><a href="index.html">Home</a></li>
         <!-- Cart is part of shopping flow, keep Shop highlighted -->
         <li><a href="shop.html" class="active-link">Shop</a></li>
-        <li><a href="index.html#deals">Offers</a></li>
         <li><a href="contact.html">Contact</a></li>
       </ul>
     </nav>
@@ -127,17 +126,18 @@
         Proceed to Checkout
       </button>
 
-      <button
-        class="secondary-btn"
-        type="button"
-        onclick="window.location.href='shop.html'"
-      >
-        Continue Shopping
+      <button class="secondary-btn" type="button" onclick="window.location.href='shop.html'">
+        Continue shopping
       </button>
 
-      <p class="summary-note">
-        Review quantities before continuing to checkout.
-      </p>
+      <div class="summary-reassurance" aria-hidden="true">
+        <p class="summary-label">Delivery promises</p>
+        <ul>
+          <li>Fresh or free replacement on produce.</li>
+          <li>Chilled items travel in insulated packaging.</li>
+          <li>Friendly drivers with live tracking.</li>
+        </ul>
+      </div>
     </aside>
   </main>
 
