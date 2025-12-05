@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Contact FreshMart</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+    rel="stylesheet"
+  />
+
+  <link rel="stylesheet" href="contact.css" />
+</head>
+<body>
+  <header class="header-container">
+    <h1 class="logo">FreshMart</h1>
+    <nav>
+      <ul class="nav-links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="shop.html">Shop</a></li>
+        <li><a href="cart.html">Cart</a></li>
+        <li><a href="contact.html" class="active-link">Contact</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main class="contact-layout">
+    <section class="contact-hero">
+      <div>
+        <p class="eyebrow">We'd love to help</p>
+        <h1>Contact FreshMart</h1>
+        <p class="hero-copy">
+          Questions about an order, product availability, or delivery window? Our team is here to
+          make your grocery run simple and stress-free.
+        </p>
+        <div class="hero-pills">
+          <span class="pill">Fast replies</span>
+          <span class="pill">Friendly support</span>
+          <span class="pill">Local & fresh</span>
+        </div>
+      </div>
+      <div class="hero-card">
+        <h3>Call us directly</h3>
+        <p class="hero-phone">+1 (800) 555-1234</p>
+        <p class="hero-hours">Mon–Sat: 8:00 – 21:00 · Sunday: 9:00 – 18:00</p>
+        <p class="hero-note">Need help now? We're usually quickest by phone.</p>
+      </div>
+    </section>
+
+    <section class="contact-grid">
+      <article class="contact-card">
+        <div class="card-icon">📨</div>
+        <h3>Email support</h3>
+        <p>For order updates, refunds, or product questions.</p>
+        <a class="card-link" href="mailto:support@freshmart.com">support@freshmart.com</a>
+      </article>
+
+      <article class="contact-card">
+        <div class="card-icon">🛒</div>
+        <h3>Order help</h3>
+        <p>Share your order number and we'll prioritize your request.</p>
+        <p class="card-meta">Average reply: under 2 hours</p>
+      </article>
+
+      <article class="contact-card">
+        <div class="card-icon">🏬</div>
+        <h3>Visit in store</h3>
+        <p>125 Market Street, Springfield</p>
+        <p class="card-meta">Free parking · Fresh daily arrivals</p>
+      </article>
+    </section>
+
+    <section class="contact-panel">
+      <div class="panel-text">
+        <h2>Send us a message</h2>
+        <p>
+          Drop a note and we'll get back within one business day. For urgent requests, please call
+          so we can help immediately.
+        </p>
+        <ul class="panel-list">
+          <li>Delivery updates & substitutions</li>
+          <li>Product sourcing and allergens</li>
+          <li>Returns, refunds, or payment issues</li>
+        </ul>
+      </div>
+      <form class="contact-form">
+        <div class="form-row">
+          <label for="name">Full name</label>
+          <input type="text" id="name" name="name" placeholder="Your name" />
+        </div>
+        <div class="form-row">
+          <label for="email">Email</label>
+          <input type="email" id="email" name="email" placeholder="you@example.com" />
+        </div>
+        <div class="form-row">
+          <label for="topic">Topic</label>
+          <select id="topic" name="topic">
+            <option>Order issue</option>
+            <option>Product question</option>
+            <option>Delivery or pickup</option>
+            <option>Account help</option>
+            <option>Other</option>
+          </select>
+        </div>
+        <div class="form-row">
+          <label for="message">Message</label>
+          <textarea id="message" name="message" rows="4" placeholder="How can we help?"></textarea>
+        </div>
+        <button type="button" class="submit-btn">Send message</button>
+        <p class="form-footnote">We typically respond in a few hours during opening times.</p>
+      </form>
+    </section>
+
+    <section class="store-hours">
+      <div>
+        <h3>Opening hours</h3>
+        <p>Mon–Sat: 8:00 – 21:00</p>
+        <p>Sunday: 9:00 – 18:00</p>
+      </div>
+      <div>
+        <h3>Service areas</h3>
+        <p>Downtown · Riverside · Oakwood · Hillcrest</p>
+        <p class="muted">Same-day delivery available in most zones.</p>
+      </div>
+      <div>
+        <h3>Social</h3>
+        <p>Instagram | Facebook | Twitter</p>
+        <p class="muted">Tag @FreshMart for features and updates.</p>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-content">
+      <div>
+        <h3>FreshMart</h3>
+        <p>Delivering freshness to your doorstep, every day.</p>
+      </div>
+      <div>
+        <h4>Contact</h4>
+        <p>Email: support@freshmart.com</p>
+        <p>Phone: +1 (800) 555-1234</p>
+      </div>
+      <div>
+        <h4>Opening Hours</h4>
+        <p>Mon–Sat: 8:00 – 21:00</p>
+        <p>Sunday: 9:00 – 18:00</p>
+      </div>
+      <div>
+        <h4>Follow Us</h4>
+        <p>Instagram | Facebook | Twitter</p>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      © 2025 FreshMart Grocery Store. All rights reserved.
+    </div>
+  </footer>
+</body>
+</html>
