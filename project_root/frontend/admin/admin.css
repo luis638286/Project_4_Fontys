@@ -299,6 +299,28 @@ body.admin-dashboard-body {
   justify-content: center;
 }
 
+.admin-back-link {
+  align-self: flex-start;
+  margin-bottom: 14px;
+  padding: 8px 12px;
+  border-radius: var(--fm-radius-lg);
+  border: 1px solid var(--fm-border-soft);
+  background: linear-gradient(120deg, rgba(45, 191, 100, 0.08), rgba(30, 64, 175, 0.06));
+  color: var(--fm-text-main);
+  font-weight: 600;
+  cursor: pointer;
+  display: inline-flex;
+  gap: 8px;
+  align-items: center;
+  transition: transform var(--fm-transition-fast), box-shadow var(--fm-transition-fast);
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.08);
+}
+
+.admin-back-link:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.12);
+}
+
 .admin-auth-header {
   margin-bottom: 26px;
 }
