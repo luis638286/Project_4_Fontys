@@ -41,8 +41,13 @@ document.addEventListener('DOMContentLoaded', async () => {
 
 async function loadCustomers() {
   try {
-    const users = await apiClient.listUsers('customer')
-    customers = (users || []).map(enrichCustomer)
+    const [users, orders] = await Promise.all([
+      apiClient.listUsers('customer'),
+      apiClient.listOrders(),
+    ])
+
+    const orderStats = buildOrderStats(orders || [])
+    customers = (users || []).map((user) => enrichCustomer(user, orderStats[user.id]))
     filtered = [...customers]
     renderTable(filtered)
     renderKPIs(filtered)
@@ -53,19 +58,54 @@ async function loadCustomers() {
   }
 }
 
-function enrichCustomer(user) {
+function buildOrderStats(orders) {
+  const stats = {}
+
+  orders.forEach((order) => {
+    if (!order.user_id) return
+
+    const createdAt = order.created_at ? new Date(order.created_at) : null
+    const entry =
+      stats[order.user_id] || {
+        orders: 0,
+        totalSpend: 0,
+        lastOrder: null,
+      }
+
+    entry.orders += 1
+    entry.totalSpend += Number(order.total || order.subtotal || 0)
+    if (createdAt && (!entry.lastOrder || createdAt > entry.lastOrder)) {
+      entry.lastOrder = createdAt
+    }
+
+    stats[order.user_id] = entry
+  })
+
+  return stats
+}
+
+function enrichCustomer(user, stats = {}) {
   const createdAt = user.created_at ? new Date(user.created_at) : new Date()
+  const ordersCount = stats.orders || 0
+  const totalSpend = stats.totalSpend || 0
+  const lastOrderDate = stats.lastOrder || createdAt
+
+  const daysSinceLastOrder = Math.floor((Date.now() - lastOrderDate.getTime()) / (1000 * 60 * 60 * 24))
+  const status = ordersCount === 0 ? 'inactive' : daysSinceLastOrder > 60 ? 'at_risk' : 'active'
+  const segment =
+    ordersCount >= 10 ? 'Platinum' : ordersCount >= 5 ? 'Gold' : ordersCount >= 1 ? 'Active' : 'New'
+
   return {
     id: user.id,
     name: `${user.first_name} ${user.last_name}`.trim(),
     email: user.email,
     phone: user.phone || 'N/A',
     address: user.address || '—',
-    segment: 'Active',
-    status: 'active',
-    orders: 0,
-    totalSpend: 0,
-    lastOrder: createdAt.toLocaleDateString(),
+    segment,
+    status,
+    orders: ordersCount,
+    totalSpend,
+    lastOrder: lastOrderDate.toLocaleDateString(),
     createdAt,
     note: 'Registered customer from the storefront.',
   }
