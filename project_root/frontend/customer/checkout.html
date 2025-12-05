@@ -121,6 +121,25 @@
       font-weight: 700;
     }
 
+    .checkout-heading {
+      display: grid;
+      gap: 6px;
+    }
+
+    .checkout-lede {
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .checkout-highlights {
+      display: grid;
+      gap: 4px;
+      padding-left: 18px;
+      color: var(--muted);
+      font-size: 13px;
+      margin-top: 2px;
+    }
+
     .alert {
       padding: 12px 14px;
       border-radius: 12px;
@@ -162,9 +181,14 @@
 
   <main class="checkout-layout">
     <section class="form-card">
-      <div>
+      <div class="checkout-heading">
         <h2>Checkout</h2>
-        <p style="color: #666; font-size: 14px;">Confirm your details and place your order.</p>
+        <p class="checkout-lede">Confirm your details so we can prepare and deliver your order smoothly.</p>
+        <ul class="checkout-highlights" aria-hidden="true">
+          <li>Slot selection after confirmation — we text you the window.</li>
+          <li>Contactless drop-off available; add it in the delivery notes.</li>
+          <li>Secure payments and instant receipts to your inbox.</li>
+        </ul>
       </div>
 
       <div class="alert error" id="checkout-error"></div>
