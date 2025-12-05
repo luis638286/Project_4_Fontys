@@ -19,7 +19,7 @@
       const result = await apiClient.login({ email, password })
       rememberUser(result.user)
       form.reset()
-      window.location.href = 'shop.html'
+      window.location.href = 'index.html'
     } catch (err) {
       showError(err.message || 'Unable to log in')
     }

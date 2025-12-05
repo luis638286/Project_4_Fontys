@@ -7,6 +7,16 @@
     <link rel="stylesheet" href="login.css">
 </head>
 <body>
+    <div class="login-topbar">
+      <div class="user-chip">
+        <div class="user-avatar" data-user-avatar>👤</div>
+        <div class="user-meta">
+          <span class="user-name" data-user-name>Guest</span>
+          <span class="user-status" data-user-status>Not signed in</span>
+        </div>
+      </div>
+      <button class="auth-button" type="button" data-auth-button>Log in</button>
+    </div>
 
     <div class="login-container">
 
@@ -44,10 +54,15 @@
             Don't have an account? <a href="signup.html">Sign up now</a>
         </p>
 
+        <button class="admin-login" type="button" onclick="window.location.href='../admin/admin-login.html'">
+            Admin Login
+        </button>
+
     </div>
 
     <script src="../assets/js/config.js" defer></script>
     <script src="../assets/js/api.js" defer></script>
+    <script src="js/user-session.js" defer></script>
     <script src="login.js" defer></script>
 </body>
 </html>
