@@ -16,7 +16,7 @@
   <style>
     .checkout-layout {
       max-width: 1200px;
-      margin: 40px auto 60px;
+      margin: 40px auto 70px;
       padding: 0 20px;
       display: grid;
       grid-template-columns: 1.2fr 0.8fr;
@@ -24,18 +24,20 @@
     }
 
     .form-card {
-      background: #ffffff;
-      border-radius: 20px;
+      background: var(--card);
+      border-radius: 22px;
       padding: 22px 24px;
-      box-shadow: 0 14px 36px rgba(0, 0, 0, 0.16);
+      box-shadow: var(--shadow);
       display: flex;
       flex-direction: column;
       gap: 16px;
+      border: 1px solid rgba(15, 61, 46, 0.05);
     }
 
     .form-card h2 {
       font-size: 22px;
       margin-bottom: 4px;
+      color: var(--forest);
     }
 
     .form-grid {
@@ -48,16 +50,17 @@
       display: block;
       font-size: 14px;
       margin-bottom: 6px;
-      color: #444;
+      color: var(--forest);
     }
 
     .form-group input,
     .form-group textarea {
       width: 100%;
-      padding: 10px 12px;
-      border-radius: 10px;
-      border: 1px solid #dcdcdc;
+      padding: 11px 12px;
+      border-radius: 12px;
+      border: 1px solid rgba(15, 61, 46, 0.12);
       font-size: 14px;
+      background: rgba(249, 251, 245, 0.9);
     }
 
     .form-group textarea {
@@ -75,37 +78,47 @@
     .primary-btn {
       border: none;
       padding: 12px 18px;
-      border-radius: 12px;
-      background: linear-gradient(45deg, #57ff71, #28cf33);
-      color: #053100;
+      border-radius: 14px;
+      background: linear-gradient(120deg, var(--leaf), var(--leaf-light));
+      color: #ffffff;
       font-weight: 700;
       cursor: pointer;
+      box-shadow: 0 14px 28px rgba(45, 191, 100, 0.22);
     }
 
     .secondary-btn {
-      border: 1px solid #ccc;
-      background: #f7f7f7;
-      color: #333;
+      border: 1px solid rgba(15, 61, 46, 0.12);
+      background: #ffffff;
+      color: var(--forest);
       padding: 12px 18px;
       border-radius: 12px;
       cursor: pointer;
+      transition: background 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+    }
+
+    .secondary-btn:hover {
+      background: rgba(45, 191, 100, 0.08);
+      border-color: rgba(45, 191, 100, 0.35);
+      box-shadow: 0 10px 20px rgba(15, 61, 46, 0.12);
     }
 
     .order-summary-box {
-      background: #ffffff;
-      border-radius: 20px;
+      background: var(--card);
+      border-radius: 22px;
       padding: 22px;
-      box-shadow: 0 14px 36px rgba(0, 0, 0, 0.16);
+      box-shadow: var(--shadow);
+      border: 1px solid rgba(15, 61, 46, 0.05);
     }
 
     .order-item {
       display: flex;
       justify-content: space-between;
       margin-bottom: 10px;
+      color: var(--forest);
     }
 
     .order-item span:last-child {
-      font-weight: 600;
+      font-weight: 700;
     }
 
     .alert {
@@ -135,6 +148,16 @@
         <li><a href="#footer">Contact</a></li>
       </ul>
     </nav>
+    <div class="header-actions">
+      <div class="user-chip">
+        <div class="user-avatar" data-user-avatar>👤</div>
+        <div class="user-meta">
+          <span class="user-name" data-user-name>Guest</span>
+          <span class="user-status" data-user-status>Not signed in</span>
+        </div>
+      </div>
+      <button class="auth-button" type="button" data-auth-button>Log in</button>
+    </div>
   </header>
 
   <main class="checkout-layout">
@@ -230,6 +253,7 @@
   <script src="../assets/js/config.js" defer></script>
   <script src="../assets/js/api.js" defer></script>
   <script src="../assets/js/cart.js" defer></script>
+  <script src="js/user-session.js" defer></script>
   <script src="js/checkout.js" defer></script>
 </body>
 </html>

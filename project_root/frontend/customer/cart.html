@@ -24,10 +24,19 @@
         <li><a href="index.html">Home</a></li>
         <!-- Cart is part of shopping flow, keep Shop highlighted -->
         <li><a href="shop.html" class="active-link">Shop</a></li>
-        <li><a href="index.html#deals">Offers</a></li>
-        <li><a href="#footer">Contact</a></li>
+        <li><a href="contact.html">Contact</a></li>
       </ul>
     </nav>
+    <div class="header-actions">
+      <div class="user-chip">
+        <div class="user-avatar" data-user-avatar>👤</div>
+        <div class="user-meta">
+          <span class="user-name" data-user-name>Guest</span>
+          <span class="user-status" data-user-status>Not signed in</span>
+        </div>
+      </div>
+      <button class="auth-button" type="button" data-auth-button>Log in</button>
+    </div>
   </header>
 
   <!-- MAIN LAYOUT -->
@@ -161,6 +170,7 @@
   <script src="../assets/js/config.js" defer></script>
   <script src="../assets/js/api.js" defer></script>
   <script src="../assets/js/cart.js" defer></script>
+  <script src="js/user-session.js" defer></script>
   <script src="js/cart-page.js" defer></script>
 </body>
 </html>
