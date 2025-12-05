@@ -9,7 +9,11 @@ A cleaned-up, sqlite-backed FreshMart demo with a structured Flask API and stati
 - `frontend/` – static admin and customer experiences
   - `assets/` – shared config + API helper loaded by both admin and customer pages
   - `admin/` – admin dashboards and product management UI
+    - `css/` – styling for admin pages
+    - `js/` – admin-specific behavior and API calls
   - `customer/` – storefront pages (shop, login, checkout)
+    - `css/` – styling for customer pages
+    - `js/` – customer UI behavior and shared session helpers
 - `docs/` – existing security docs
 
 ## Backend setup
