@@ -169,10 +169,11 @@ body {
 
 .page-title::before {
   content: "";
-  width: 34px;
-  height: 3px;
-  border-radius: 999px;
-  background: linear-gradient(90deg, var(--leaf), var(--citrus));
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--leaf), var(--citrus));
+  box-shadow: 0 0 0 6px rgba(45, 191, 100, 0.14);
 }
 
 .page-subtitle {

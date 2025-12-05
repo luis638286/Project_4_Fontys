@@ -5,12 +5,23 @@
   const totalEl = document.getElementById('summary-total')
   const itemsCountEl = document.getElementById('summary-items-count')
   const checkoutBtn = document.querySelector('.checkout-btn')
+  const LOGIN_PAGE = 'login.html'
 
   document.addEventListener('DOMContentLoaded', () => {
     itemsContainer?.addEventListener('click', handleButtonClick)
     itemsContainer?.addEventListener('change', handleInputChange)
     renderCart()
   })
+
+  function getStoredUser() {
+    try {
+      const raw = localStorage.getItem('freshmart_user')
+      return raw ? JSON.parse(raw) : null
+    } catch (err) {
+      console.warn('Unable to read stored user', err)
+      return null
+    }
+  }
 
   function renderCart() {
     if (!itemsContainer || !emptyText || !subtotalEl || !totalEl || !itemsCountEl || !checkoutBtn) return
@@ -31,7 +42,16 @@
     emptyText.style.display = 'none'
     checkoutBtn.disabled = false
     checkoutBtn.classList.remove('disabled')
-    checkoutBtn.addEventListener('click', () => (window.location.href = 'checkout.html'))
+
+    checkoutBtn.textContent = getStoredUser() ? 'Proceed to Checkout' : 'Log in to Checkout'
+    checkoutBtn.onclick = () => {
+      const user = getStoredUser()
+      if (!user) {
+        window.location.href = LOGIN_PAGE
+        return
+      }
+      window.location.href = 'checkout.html'
+    }
 
     cart.forEach((item) => {
       const row = document.createElement('article')

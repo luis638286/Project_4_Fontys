@@ -1,6 +1,7 @@
 (function () {
   let products = []
   const cartUI = {}
+  const LOGIN_PAGE = 'login.html'
 
   document.addEventListener('DOMContentLoaded', () => {
     cacheCartElements()
@@ -11,6 +12,25 @@
     renderCartPanel()
     window.addEventListener('storage', renderCartPanel)
   })
+
+  function getStoredUser() {
+    try {
+      const raw = localStorage.getItem('freshmart_user')
+      return raw ? JSON.parse(raw) : null
+    } catch (err) {
+      console.warn('Unable to read stored user', err)
+      return null
+    }
+  }
+
+  function requireAuthOrRedirect() {
+    const currentUser = getStoredUser()
+    if (!currentUser) {
+      window.location.href = LOGIN_PAGE
+      return false
+    }
+    return true
+  }
 
   function cacheCartElements() {
     cartUI.list = document.querySelector('.cart-items')
@@ -89,6 +109,8 @@
       const product = products.find((p) => p.id === productId)
       const qty = qtyInput ? Math.max(1, parseInt(qtyInput.value, 10) || 1) : 1
 
+      if (!requireAuthOrRedirect()) return
+
       if (!product) {
         if (errorBox) errorBox.textContent = 'Product not found in the catalog'
         return
@@ -153,7 +175,14 @@
     cartUI.empty.style.display = 'none'
     cartUI.checkout.disabled = false
     cartUI.checkout.classList.remove('disabled')
-    cartUI.checkout.onclick = () => (window.location.href = 'checkout.html')
+
+    if (getStoredUser()) {
+      cartUI.checkout.textContent = 'Proceed to Checkout'
+      cartUI.checkout.onclick = () => (window.location.href = 'checkout.html')
+    } else {
+      cartUI.checkout.textContent = 'Log in to Checkout'
+      cartUI.checkout.onclick = () => (window.location.href = LOGIN_PAGE)
+    }
 
     items.forEach((item) => {
       const row = document.createElement('div')
