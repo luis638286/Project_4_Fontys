@@ -18,6 +18,11 @@
     }
 
     currentUser = readUser()
+    if (!currentUser) {
+      window.location.href = 'login.html'
+      return
+    }
+
     prefillForm()
     renderSummary()
 
